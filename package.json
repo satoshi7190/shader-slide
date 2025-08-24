@@ -41,5 +41,9 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"ace-builds": "^1.43.2",
+		"es-toolkit": "^1.39.10"
 	}
 }
