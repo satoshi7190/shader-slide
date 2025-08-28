@@ -27,8 +27,10 @@
 	}
 </script>
 
-<div class="h-dvh w-screen">
-	{@render children?.()}
+<div class="grid h-dvh w-screen place-items-center bg-black">
+	<div class="absolute aspect-video w-full bg-white text-[2vw]">
+		{@render children?.()}
+	</div>
 </div>
 
 <svelte:window on:keydown={handleKeydown} />

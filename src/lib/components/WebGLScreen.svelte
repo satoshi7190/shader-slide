@@ -3,6 +3,13 @@
 	import fragmentShaderSource from './shaders/fragment.glsl?raw';
 	import vertexShaderSource from './shaders/vertex.glsl?raw';
 
+	interface Props {
+		fs?: string;
+		vs?: string;
+	}
+
+	let { fs = fragmentShaderSource, vs = vertexShaderSource }: Props = $props();
+
 	let canvas: HTMLCanvasElement | null = null;
 	let gl: WebGLRenderingContext | null = null;
 	let program: WebGLProgram | null = null;
@@ -62,8 +69,8 @@
 			return;
 		}
 
-		const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-		const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+		const vertexShader = createShader(gl, gl.VERTEX_SHADER, vs);
+		const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fs);
 
 		if (!vertexShader || !fragmentShader) {
 			console.error('Failed to create shaders');
@@ -77,7 +84,6 @@
 			return;
 		}
 
-		// まずプログラムを使用状態にする
 		gl.useProgram(program);
 
 		const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
@@ -112,13 +118,13 @@
 		gl.viewport(0, 0, width, height);
 		gl.useProgram(program);
 
-		// delay用のヘルパー関数
-
 		// アニメーションを開始する関数
+		const startTime = performance.now();
 
 		const draw = () => {
 			const now = performance.now();
 			// 現在のトランジション開始時点からの経過時間
+			const elapsedSec = (now - startTime) / 1000;
 
 			if (!gl) {
 				console.error('WebGL context not available or animation stopped');
@@ -129,7 +135,7 @@
 			gl.clear(gl.COLOR_BUFFER_BIT);
 
 			gl.useProgram(program);
-			gl.uniform1f(time, elapsed);
+			gl.uniform1f(time, elapsedSec);
 			gl.uniform2f(resolution, gl.drawingBufferWidth, gl.drawingBufferHeight);
 
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -141,7 +147,18 @@
 	});
 </script>
 
-<canvas bind:this={canvas} class="h-full w-full"></canvas>
+<canvas bind:this={canvas} class="-z-10 h-full w-full"></canvas>
+<svelte:window
+	on:resize={() => {
+		if (gl && canvas) {
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+			canvas.width = width;
+			canvas.height = height;
+			gl.viewport(0, 0, width, height);
+		}
+	}}
+/>
 
 <style>
 </style>

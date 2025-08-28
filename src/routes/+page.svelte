@@ -1,5 +1,15 @@
-<div class="relative flex h-full w-full flex-col items-center justify-center gap-6">
-	<span class="text-3xl">GLSL で解き放つ！WebGL シェーダーが生み出す魔法体験</span>
-	<span class="text-2xl">株式会社MIERUNE </span>
-	<span class="text-2xl">Satoshi Komatsu </span>
-</div>
+<script lang="ts">
+	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
+</script>
+
+<WebGLScreen />
+
+<span class="absolute top-[10%] left-1/2 -translate-x-1/2 text-[200%] text-white"
+	>GLSL で解き放つ！WebGL シェーダーが生み出す魔法体験</span
+>
+<span class="absolute bottom-[16%] left-1/2 -translate-x-1/2 text-[100%] text-white"
+	>株式会社MIERUNE
+</span>
+<span class="absolute bottom-[24%] left-1/2 -translate-x-1/2 text-[100%] text-white"
+	>Satoshi Komatsu
+</span>
