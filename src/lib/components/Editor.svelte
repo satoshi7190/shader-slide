@@ -3,6 +3,12 @@
 	import { debounce } from 'es-toolkit';
 	import fragment from './shaders/fragment.glsl?raw';
 
+	interface Props {
+		fs?: string;
+	}
+
+	let { fs = $bindable() }: Props = $props();
+
 	// --- 必要なモジュールのインポート ---
 	// 1. GLSL用の言語モードをインポート
 	import 'ace-builds/src-noconflict/mode-glsl';
@@ -28,21 +34,20 @@
 	};
 
 	onMount(() => {
-		const aaa = document.getElementById('editor');
-		const editor = ace.edit(aaa);
+		const editor = ace.edit(editElement);
 
-		// エディタのオプションをまとめて設定
+		// エディタのオプション
 		editor.setOptions({
 			theme: 'ace/theme/monokai', // テーマ
 			mode: 'ace/mode/glsl', // 言語モード
-			fontSize: '14pt', // フォントサイズ
-			tabSize: 4, // タブサイズ (GLSLでは4が一般的)
+			fontSize: '80%', // フォントサイズ
+			tabSize: 4, // タブサイズ
 			useSoftTabs: true, // ソフトタブ（スペース）を使用
 			showPrintMargin: false, // 印刷範囲の線を表示しない
 			showInvisibles: false, // 不可視文字を表示しない
 			highlightSelectedWord: true, // 選択した単語をハイライト
-			enableBasicAutocompletion: true, // 基本的な自動補完を有効化
-			enableLiveAutocompletion: true, // ライブ補完（入力中）を有効化
+			enableBasicAutocompletion: true, // 基本的な自動補完
+			enableLiveAutocompletion: true, // ライブ補完
 			enableSnippets: true // スニペットを有効化
 		});
 
@@ -51,7 +56,7 @@
 
 		// --- 初期コードの設定 ---
 		// GLSLのサンプルコードをエディタに設定
-		editor.setValue(fragment, -1); // -1はカーソル位置を変更しない
+		editor.setValue(fs, -1); // -1はカーソル位置を変更しない
 
 		// --- イベントリスナー ---
 
@@ -71,5 +76,4 @@
 	});
 </script>
 
-ssss
-<div id="editor" class="h-full w-1/2"></div>
+<div id="editor" class="h-full w-1/2" bind:this={editElement}></div>

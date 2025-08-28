@@ -2,7 +2,7 @@
 	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
 </script>
 
-<WebGLScreen />
+<WebGLScreen className="w-full" />
 
 <span class="absolute top-[10%] left-1/2 -translate-x-1/2 text-[200%] text-white"
 	>GLSL で解き放つ！WebGL シェーダーが生み出す魔法体験</span
