@@ -1,30 +1,21 @@
 <script lang="ts">
 	import '../app.css';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
+	import { nextPage } from '$lib/utils';
 
 	let { children } = $props();
 
 	// ページのルートを定義
-	const routes = ['/', '/01', '/02'];
 
 	// キーボードイベントハンドラー
-	function handleKeydown(event: KeyboardEvent) {
-		const currentPath = page.url.pathname;
-		const currentIndex = routes.indexOf(currentPath);
-
+	const handleKeydown = (event: KeyboardEvent) => {
 		if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
 			// 次のページへ
-			if (currentIndex < routes.length - 1) {
-				goto(routes[currentIndex + 1]);
-			}
+			nextPage('next');
 		} else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
 			// 前のページへ
-			if (currentIndex > 0) {
-				goto(routes[currentIndex - 1]);
-			}
+			nextPage('prev');
 		}
-	}
+	};
 </script>
 
 <div class="grid h-dvh w-screen place-items-center bg-black">

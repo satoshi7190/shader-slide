@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Editor from '$lib/components/Editor.svelte';
 	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
-	import fs from './shaders/fragment.glsl?raw';
-	import vs from './shaders/vertex.glsl?raw';
+	import fs from './fragment.glsl?raw';
 
 	import { onMount } from 'svelte';
 
@@ -12,4 +11,4 @@
 </script>
 
 <!-- <Editor /> -->
-<WebGLScreen {fs} {vs} />
+<WebGLScreen {fs} className="w-full" />

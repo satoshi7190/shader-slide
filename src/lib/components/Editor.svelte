@@ -1,10 +1,9 @@
 <script lang="ts">
 	import ace from 'ace-builds/src-noconflict/ace';
 	import { debounce } from 'es-toolkit';
-	import fragment from './shaders/fragment.glsl?raw';
 
 	interface Props {
-		fs?: string;
+		fs: string;
 	}
 
 	let { fs = $bindable() }: Props = $props();
@@ -31,6 +30,8 @@
 
 	const updateFragmentShader = (code: string) => {
 		console.log(code);
+
+		fs = code;
 	};
 
 	onMount(() => {

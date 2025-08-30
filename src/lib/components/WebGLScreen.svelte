@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import fragmentShaderSource from './shaders/fragment.glsl?raw';
 	import vertexShaderSource from './shaders/vertex.glsl?raw';
 	import { twMerge } from 'tailwind-merge';
+	import { nextPage } from '$lib/utils';
 
 	interface Props {
-		fs?: string;
-		vs?: string;
+		fs: string;
 		className?: string;
 	}
 
-	let { fs = fragmentShaderSource, vs = vertexShaderSource, className = 'w-1/2' }: Props = $props();
+	let { fs, className = 'w-1/2' }: Props = $props();
 
 	let canvas: HTMLCanvasElement | null = null;
 	let gl: WebGLRenderingContext | null = null;
@@ -31,11 +30,41 @@
 				console.error('Failed to create shader');
 				return null;
 			}
-			gl.shaderSource(shader, source);
+
+			let finalSource = source;
+
+			// フラグメントシェーダーの場合、precision文を自動追加
+			if (type === gl.FRAGMENT_SHADER) {
+				const precisionDirective = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+                    precision highp float;
+                    #else
+                    precision mediump float;
+                    #endif
+
+                    `;
+
+				// すでにprecision文が含まれている場合は追加しない
+				if (!source.includes('precision')) {
+					// #version ディレクティブがある場合はその後に追加
+					if (source.includes('#version')) {
+						const versionMatch = source.match(/#version\s+\d+.*?\n/);
+						if (versionMatch) {
+							const versionLine = versionMatch[0];
+							finalSource = source.replace(versionLine, versionLine + precisionDirective);
+						}
+					} else {
+						// #version がない場合は先頭に追加
+						finalSource = precisionDirective + source;
+					}
+				}
+			}
+
+			gl.shaderSource(shader, finalSource);
 			gl.compileShader(shader);
 			const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
 			if (!success) {
-				console.error(gl.getShaderInfoLog(shader));
+				console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
+				console.error('Source code:', finalSource); // デバッグ用に最終ソースも出力
 				gl.deleteShader(shader);
 				return null;
 			}
@@ -53,7 +82,7 @@
 			gl.linkProgram(program);
 			const success = gl.getProgramParameter(program, gl.LINK_STATUS);
 			if (!success) {
-				console.error(gl.getProgramInfoLog(program));
+				console.error('Program linking error:', gl.getProgramInfoLog(program));
 				gl.deleteProgram(program);
 				return null;
 			}
@@ -71,7 +100,7 @@
 			return;
 		}
 
-		const vertexShader = createShader(gl, gl.VERTEX_SHADER, vs);
+		const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
 		const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fs);
 
 		if (!vertexShader || !fragmentShader) {
@@ -151,99 +180,15 @@
 	// fsプロパティが変化したときにシェーダーを更新
 	$effect(() => {
 		if (!gl || !fs) return;
-
-		const createShader = (gl: WebGLRenderingContext, type: GLenum, source: string) => {
-			const shader = gl.createShader(type);
-			if (!shader) {
-				console.error('Failed to create shader');
-				return null;
-			}
-			gl.shaderSource(shader, source);
-			gl.compileShader(shader);
-			const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-			if (!success) {
-				console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
-				gl.deleteShader(shader);
-				return null;
-			}
-			return shader;
-		};
-
-		const createProgram = (
-			gl: WebGLRenderingContext,
-			vertexShader: WebGLShader,
-			fragmentShader: WebGLShader
-		) => {
-			const newProgram = gl.createProgram();
-			if (!newProgram) {
-				console.error('Failed to create program');
-				return null;
-			}
-			gl.attachShader(newProgram, vertexShader);
-			gl.attachShader(newProgram, fragmentShader);
-			gl.linkProgram(newProgram);
-			const success = gl.getProgramParameter(newProgram, gl.LINK_STATUS);
-			if (!success) {
-				console.error('Program linking error:', gl.getProgramInfoLog(newProgram));
-				gl.deleteProgram(newProgram);
-				return null;
-			}
-			return newProgram;
-		};
-
-		try {
-			// 新しいフラグメントシェーダーを作成
-			const newFragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fs);
-			if (!newFragmentShader) {
-				console.error('Failed to create new fragment shader');
-				return;
-			}
-
-			// 既存の頂点シェーダーを取得（または新しく作成）
-			const newVertexShader = createShader(gl, gl.VERTEX_SHADER, vs);
-			if (!newVertexShader) {
-				console.error('Failed to create vertex shader');
-				gl.deleteShader(newFragmentShader);
-				return;
-			}
-
-			// 新しいプログラムを作成
-			const newProgram = createProgram(gl, newVertexShader, newFragmentShader);
-			if (!newProgram) {
-				console.error('Failed to create new shader program');
-				gl.deleteShader(newVertexShader);
-				gl.deleteShader(newFragmentShader);
-				return;
-			}
-
-			// 古いプログラムを削除
-			if (program) {
-				gl.deleteProgram(program);
-			}
-
-			// 新しいプログラムを使用
-			program = newProgram;
-			gl.useProgram(program);
-
-			// ユニフォームの場所を再取得
-			time = gl.getUniformLocation(program, 'time');
-			resolution = gl.getUniformLocation(program, 'resolution');
-
-			// 属性の設定を再設定
-			const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
-			if (positionAttributeLocation >= 0) {
-				gl.enableVertexAttribArray(positionAttributeLocation);
-				gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
-			}
-
-			console.log('Shader updated successfully');
-		} catch (error) {
-			console.error('Error updating shader:', error);
-		}
 	});
+
+	const handleClick = (event: MouseEvent) => {
+		if (!canvas) return;
+		nextPage('next');
+	};
 </script>
 
-<canvas bind:this={canvas} class={twMerge('h-full', className)}></canvas>
+<canvas bind:this={canvas} onclick={handleClick} class={twMerge('h-full', className)}></canvas>
 <svelte:window
 	on:resize={() => {
 		if (gl && canvas) {
