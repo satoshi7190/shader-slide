@@ -16,8 +16,13 @@
 	let gl: WebGLRenderingContext | null = null;
 	let program: WebGLProgram | null = null;
 	let time: WebGLUniformLocation | null = null;
+	let mouse: WebGLUniformLocation | null = null;
 	let texture: WebGLTexture | null = null;
 	let resolution: WebGLUniformLocation | null = null;
+
+	// Mouse state (in pixels, y flipped to match gl_FragCoord)
+	let mouseX = 0;
+	let mouseY = 0;
 
 	const createShader = (gl: WebGLRenderingContext, type: GLenum, source: string) => {
 		const shader = gl.createShader(type);
@@ -125,6 +130,7 @@
 		const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
 		time = gl.getUniformLocation(program, 'time');
 		resolution = gl.getUniformLocation(program, 'resolution');
+		mouse = gl.getUniformLocation(program, 'mouse');
 
 		const positionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -171,8 +177,9 @@
 			gl.clear(gl.COLOR_BUFFER_BIT);
 
 			gl.useProgram(program);
-			gl.uniform1f(time, elapsedSec);
-			gl.uniform2f(resolution, gl.drawingBufferWidth, gl.drawingBufferHeight);
+			if (time) gl.uniform1f(time, elapsedSec);
+			if (resolution) gl.uniform2f(resolution, gl.drawingBufferWidth, gl.drawingBufferHeight);
+			if (mouse) gl.uniform2f(mouse, mouseX, mouseY);
 
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 
@@ -207,6 +214,7 @@
 		// Re-fetch uniforms for the new program
 		time = gl.getUniformLocation(program, 'time');
 		resolution = gl.getUniformLocation(program, 'resolution');
+		mouse = gl.getUniformLocation(program, 'mouse');
 
 		// Attribute location is forced to 0 via bindAttribLocation; ensure it is enabled
 		const loc = gl.getAttribLocation(program, 'a_position');
@@ -217,22 +225,74 @@
 		}
 	});
 
+	const fitCanvas = (gl: WebGLRenderingContext, canvas: HTMLCanvasElement) => {
+		const dpr = Math.max(1, window.devicePixelRatio || 1);
+		const displayWidth = Math.floor(canvas.clientWidth * dpr);
+		const displayHeight = Math.floor(canvas.clientHeight * dpr);
+
+		if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+			canvas.width = displayWidth;
+			canvas.height = displayHeight;
+			gl.viewport(0, 0, displayWidth, displayHeight);
+		}
+	};
+
 	const handleClick = (event: MouseEvent) => {
 		if (!canvas) return;
 		nextPage('next');
 	};
 </script>
 
-<canvas bind:this={canvas} onclick={handleClick} class={twMerge('z-0 h-full', className)}> </canvas>
+<canvas
+	bind:this={canvas}
+	onmousemove={(e) => {
+		if (!gl || !canvas) return;
+		const rect = canvas.getBoundingClientRect();
+
+		// CSS座標 → デバイスピクセルへ
+		const xPx = (e.clientX - rect.left) * (gl.drawingBufferWidth / rect.width);
+		const yPx = (e.clientY - rect.top) * (gl.drawingBufferHeight / rect.height);
+
+		// gl_FragCoord は下原点なので y を反転
+		const yPxBottom = gl.drawingBufferHeight - yPx;
+
+		// アスペクト補正済みの -1..1 へ
+		const minSide = Math.min(gl.drawingBufferWidth, gl.drawingBufferHeight);
+		mouseX = (xPx * 2.0 - gl.drawingBufferWidth) / minSide;
+		mouseY = (yPxBottom * 2.0 - gl.drawingBufferHeight) / minSide;
+	}}
+	ontouchmove={(e) => {
+		if (!gl || !canvas) return;
+		if (!gl || !canvas) return;
+		const rect = canvas.getBoundingClientRect();
+
+		// CSS座標 → デバイスピクセルへ
+		const xPx = (e.clientX - rect.left) * (gl.drawingBufferWidth / rect.width);
+		const yPx = (e.clientY - rect.top) * (gl.drawingBufferHeight / rect.height);
+
+		// gl_FragCoord は下原点なので y を反転
+		const yPxBottom = gl.drawingBufferHeight - yPx;
+
+		// アスペクト補正済みの -1..1 へ
+		const minSide = Math.min(gl.drawingBufferWidth, gl.drawingBufferHeight);
+		mouseX = (xPx * 2.0 - gl.drawingBufferWidth) / minSide;
+		mouseY = (yPxBottom * 2.0 - gl.drawingBufferHeight) / minSide;
+	}}
+	onclick={handleClick}
+	class={twMerge('z-0 h-full', className)}
+>
+</canvas>
 <ErrorMessage />
 <svelte:window
 	on:resize={() => {
 		if (gl && canvas) {
-			const width = window.innerWidth;
-			const height = window.innerHeight;
-			canvas.width = width;
-			canvas.height = height;
-			gl.viewport(0, 0, width, height);
+			// const width = window.innerWidth;
+			// const height = window.innerHeight;
+			// canvas.width = width;
+			// canvas.height = height;
+			// gl.viewport(0, 0, width, height);
+
+			if (gl && canvas) fitCanvas(gl, canvas);
 		}
 	}}
 />

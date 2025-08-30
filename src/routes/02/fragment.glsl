@@ -1,5 +1,6 @@
 uniform vec2 resolution;
 uniform float time;
+uniform vec2 mouse;
 
 void main(void) {
     // 正規化された画面座標 (-1 to 1)

@@ -39,7 +39,7 @@
 		editor.setOptions({
 			theme: 'ace/theme/monokai', // テーマ
 			mode: 'ace/mode/glsl', // 言語モード
-			fontSize: '80%', // フォントサイズ
+			fontSize: '60%', // フォントサイズ
 			tabSize: 4, // タブサイズ
 			useSoftTabs: true, // ソフトタブ（スペース）を使用
 			showPrintMargin: false, // 印刷範囲の線を表示しない
