@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Editor from '$lib/components/Editor.svelte';
 	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
 	import fs from './fragment.glsl?raw';
 
@@ -13,7 +12,6 @@
 <WebGLScreen {fs} className="w-full" />
 <div class="pointer-events-none absolute top-0 left-0 h-full w-full bg-black/50"></div>
 
-<!-- <Editor /> -->
 <span class="title">自己紹介</span>
 <div class="block-left flex flex-col items-center justify-center pt-[5%]">
 	<img class="aspect-square w-[60%] rounded-full" src="./84182110.png" />
