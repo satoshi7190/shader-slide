@@ -7,6 +7,19 @@ const config = {
 	// for more information about preprocessors
 	preprocess: vitePreprocess(),
 	kit: { adapter: adapter() }
+
+	// kit: {
+	// 	adapter: adapter({
+	// 		pages: 'build',
+	// 		assets: 'build',
+	// 		fallback: '404.html',
+	// 		precompress: false,
+	// 		strict: true
+	// 	}),
+	// 	paths: {
+	// 		base: process.argv.includes('dev') ? '' : '/shader-slide'
+	// 	}
+	// }
 };
 
 export default config;

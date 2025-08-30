@@ -177,9 +177,16 @@
 		draw();
 	});
 
-	// fsプロパティが変化したときにシェーダーを更新
 	$effect(() => {
-		if (!gl || !fs) return;
+		if (fs) {
+			if (!gl || !fs) return;
+			if (!program) return;
+
+			// シェーダーコードを更新
+			const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+			gl.shaderSource(fragmentShader, fs);
+			gl.compileShader(fragmentShader);
+		}
 	});
 
 	const handleClick = (event: MouseEvent) => {
@@ -188,7 +195,7 @@
 	};
 </script>
 
-<canvas bind:this={canvas} onclick={handleClick} class={twMerge('h-full', className)}></canvas>
+<canvas bind:this={canvas} onclick={handleClick} class={twMerge('z-0 h-full', className)}></canvas>
 <svelte:window
 	on:resize={() => {
 		if (gl && canvas) {

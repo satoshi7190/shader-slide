@@ -1,2 +1,14 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+@utility title {
+	@apply absolute top-[3%] left-[2%] text-[200%] text-white;
+}
+
+@utility block-left {
+	@apply absolute top-[15%] left-[3%] flex w-1/2 flex-col text-[100%] text-white;
+}
+
+@utility block-right {
+	@apply absolute top-[15%] right-[3%] flex w-1/2 flex-col text-[100%] text-white;
+}

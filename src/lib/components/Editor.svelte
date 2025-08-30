@@ -29,8 +29,6 @@
 	let editElement = $state<HTMLElement | null>(null);
 
 	const updateFragmentShader = (code: string) => {
-		console.log(code);
-
 		fs = code;
 	};
 
