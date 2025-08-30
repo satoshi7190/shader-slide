@@ -187,6 +187,8 @@
 		};
 
 		draw();
+
+		fitCanvas(gl, canvas);
 	});
 
 	$effect(() => {

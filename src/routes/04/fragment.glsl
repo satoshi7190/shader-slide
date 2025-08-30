@@ -2,7 +2,7 @@ uniform vec2 resolution;
 uniform float time;
 uniform vec2 mouse;
 
-void main(){
+void main(void){
     vec2 r=resolution;
     vec2 p=(gl_FragCoord.xy*2.-r) / min(r.x,r.y) - mouse;
     for(int i=0;i<8;++i)
