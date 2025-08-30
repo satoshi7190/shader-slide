@@ -3,7 +3,8 @@
 	import vertexShaderSource from './shaders/vertex.glsl?raw';
 	import { twMerge } from 'tailwind-merge';
 	import { nextPage } from '$lib/utils';
-
+	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
+	import { isErrorMessage } from '$lib/store';
 	interface Props {
 		fs: string;
 		className?: string;
@@ -57,11 +58,13 @@
 		gl.compileShader(shader);
 		const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
 		if (!success) {
+			isErrorMessage.set(gl.getShaderInfoLog(shader));
 			console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
 			console.error('Source code:', finalSource); // デバッグ用に最終ソースも出力
 			gl.deleteShader(shader);
 			return null;
 		}
+		isErrorMessage.set(null);
 		return shader;
 	};
 
@@ -220,7 +223,8 @@
 	};
 </script>
 
-<canvas bind:this={canvas} onclick={handleClick} class={twMerge('z-0 h-full', className)}></canvas>
+<canvas bind:this={canvas} onclick={handleClick} class={twMerge('z-0 h-full', className)}> </canvas>
+<ErrorMessage />
 <svelte:window
 	on:resize={() => {
 		if (gl && canvas) {

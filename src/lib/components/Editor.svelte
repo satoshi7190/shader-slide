@@ -76,3 +76,24 @@
 </script>
 
 <div id="editor" class="h-full w-1/2" bind:this={editElement}></div>
+
+<style>
+	/* エディタのスタイル */
+	:global(.ace_scrollbar) {
+		overflow-x: hidden !important;
+		-webkit-overflow-scrolling: touch !important;
+		scrollbar-gutter: stable !important;
+
+		&::-webkit-scrollbar {
+			width: 5px !important;
+			height: 5px !important;
+		}
+		&::-webkit-scrollbar-track {
+			background: transparent !important;
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: aquamarine !important;
+			border-radius: 9999px !important;
+		}
+	}
+</style>
