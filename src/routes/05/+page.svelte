@@ -3,12 +3,6 @@
 	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
 	import fragment from './fragment.glsl?raw';
 
-	import { onMount } from 'svelte';
-
-	onMount(() => {
-		console.log('Component mounted');
-	});
-
 	let fs = $derived(fragment);
 </script>
 

@@ -5,10 +5,6 @@
 
 	import { onMount } from 'svelte';
 
-	onMount(() => {
-		console.log('Component mounted');
-	});
-
 	let fs = $derived(fragment);
 </script>
 

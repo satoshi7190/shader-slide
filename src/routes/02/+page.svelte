@@ -3,10 +3,6 @@
 	import fs from './fragment.glsl?raw';
 
 	import { onMount } from 'svelte';
-
-	onMount(() => {
-		console.log('Component mounted');
-	});
 </script>
 
 <WebGLScreen {fs} className="w-full" />
