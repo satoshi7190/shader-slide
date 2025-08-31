@@ -20,6 +20,16 @@
 	let texture: WebGLTexture | null = null;
 	let resolution: WebGLUniformLocation | null = null;
 
+	// Microphone → audio texture
+	let audioCtx: (AudioContext & { resume?: () => Promise<void> }) | null = null;
+	let analyser: AnalyserNode | null = null;
+	let audioTexture: WebGLTexture | null = null;
+	let audioTexUniform: WebGLUniformLocation | null = null;
+	let audioBinsUniform: WebGLUniformLocation | null = null;
+	let freqData: Uint8Array | null = null;
+	const audioTexUnit = 1; // use texture unit 1 for audio
+	let audioBins = 0; // analyser.frequencyBinCount
+
 	// Mouse state (in pixels, y flipped to match gl_FragCoord)
 	let mouseX = 0;
 	let mouseY = 0;
@@ -102,7 +112,7 @@
 
 		// アニメーション状態を取得する関数（デバッグ用）
 
-		gl = canvas.getContext('webgl2') as WebGLRenderingContext;
+		gl = (canvas.getContext('webgl2') || canvas.getContext('webgl')) as WebGLRenderingContext;
 		const width = window.innerWidth;
 		const height = window.innerHeight;
 
@@ -132,6 +142,8 @@
 		time = gl.getUniformLocation(program, 'time');
 		resolution = gl.getUniformLocation(program, 'resolution');
 		mouse = gl.getUniformLocation(program, 'mouse');
+		audioTexUniform = gl.getUniformLocation(program, 'u_audioTex');
+		audioBinsUniform = gl.getUniformLocation(program, 'u_audioBins');
 
 		const positionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -150,6 +162,16 @@
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
+		// Prepare audio texture (created once stream/analyser is ready below)
+		audioTexture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE0 + audioTexUnit);
+		gl.bindTexture(gl.TEXTURE_2D, audioTexture);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+
 		gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
 
 		gl.canvas.width = width;
@@ -160,6 +182,34 @@
 		gl.canvas.height = height;
 		gl.viewport(0, 0, width, height);
 		gl.useProgram(program);
+
+		// Microphone init (async)
+		(async () => {
+			try {
+				const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+				// @ts-ignore
+				audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+				const src = audioCtx.createMediaStreamSource(stream);
+				analyser = audioCtx.createAnalyser();
+				analyser.fftSize = 1024; // 512 bins
+				audioBins = analyser.frequencyBinCount;
+				freqData = new Uint8Array(audioBins);
+				src.connect(analyser);
+
+				// Allocate 1xN texture storage depending on WebGL version
+				const isWebGL2 = typeof WebGL2RenderingContext !== 'undefined' && (gl as any) instanceof WebGL2RenderingContext;
+				gl.activeTexture(gl.TEXTURE0 + audioTexUnit);
+				gl.bindTexture(gl.TEXTURE_2D, audioTexture);
+				if (isWebGL2) {
+					const gl2 = gl as unknown as WebGL2RenderingContext;
+					gl2.texImage2D(gl2.TEXTURE_2D, 0, gl2.R8, audioBins, 1, 0, gl2.RED, gl2.UNSIGNED_BYTE, freqData);
+				} else {
+					gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, audioBins, 1, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, freqData);
+				}
+			} catch (e) {
+				console.error('Microphone init failed', e);
+			}
+		})();
 
 		// アニメーションを開始する関数
 		const startTime = performance.now();
@@ -181,6 +231,22 @@
 			if (time) gl.uniform1f(time, elapsedSec);
 			if (resolution) gl.uniform2f(resolution, gl.drawingBufferWidth, gl.drawingBufferHeight);
 			if (mouse) gl.uniform2f(mouse, mouseX, mouseY);
+
+			// Update audio texture + uniforms
+			if (analyser && freqData && audioTexture) {
+				analyser.getByteFrequencyData(freqData);
+				const isWebGL2 = typeof WebGL2RenderingContext !== 'undefined' && (gl as any) instanceof WebGL2RenderingContext;
+				gl.activeTexture(gl.TEXTURE0 + audioTexUnit);
+				gl.bindTexture(gl.TEXTURE_2D, audioTexture);
+				if (isWebGL2) {
+					const gl2 = gl as unknown as WebGL2RenderingContext;
+					gl2.texSubImage2D(gl2.TEXTURE_2D, 0, 0, 0, audioBins, 1, gl2.RED, gl2.UNSIGNED_BYTE, freqData);
+				} else {
+					gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, audioBins, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, freqData);
+				}
+				if (audioTexUniform) gl.uniform1i(audioTexUniform, audioTexUnit);
+				if (audioBinsUniform) gl.uniform1f(audioBinsUniform, audioBins);
+			}
 
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 
@@ -218,6 +284,10 @@
 		time = gl.getUniformLocation(program, 'time');
 		resolution = gl.getUniformLocation(program, 'resolution');
 		mouse = gl.getUniformLocation(program, 'mouse');
+		audioTexUniform = gl.getUniformLocation(program, 'u_audioTex');
+		audioBinsUniform = gl.getUniformLocation(program, 'u_audioBins');
+		if (audioTexUniform) gl.uniform1i(audioTexUniform, audioTexUnit);
+		if (audioBinsUniform) gl.uniform1f(audioBinsUniform, audioBins);
 
 		// Attribute location is forced to 0 via bindAttribLocation; ensure it is enabled
 		const loc = gl.getAttribLocation(program, 'a_position');
