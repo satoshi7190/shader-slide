@@ -35,7 +35,8 @@
 
 		// フラグメントシェーダーの場合、precision文を自動追加
 		if (type === gl.FRAGMENT_SHADER) {
-			const precisionDirective = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+			const precisionDirective = `#version 300 es
+                    #ifdef GL_FRAGMENT_PRECISION_HIGH
                     precision highp float;
                     #else
                     precision mediump float;
@@ -65,7 +66,7 @@
 		if (!success) {
 			isErrorMessage.set(gl.getShaderInfoLog(shader));
 			console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
-			console.error('Source code:', finalSource); // デバッグ用に最終ソースも出力
+			// console.error('Source code:', finalSource); // デバッグ用に最終ソースも出力
 			gl.deleteShader(shader);
 			return null;
 		}
@@ -101,7 +102,7 @@
 
 		// アニメーション状態を取得する関数（デバッグ用）
 
-		gl = canvas.getContext('webgl');
+		gl = canvas.getContext('webgl2') as WebGLRenderingContext;
 		const width = window.innerWidth;
 		const height = window.innerHeight;
 
