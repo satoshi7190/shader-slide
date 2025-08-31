@@ -4,6 +4,8 @@ uniform vec2 resolution;
 uniform float time;
 uniform vec2 mouse;
 
+out vec4 fragColor;
+
 vec3 palette( float t ) {
     vec3 a = vec3(0.5, 0.5, 0.5);
     vec3 b = vec3(0.5, 0.5, 0.5);
@@ -33,7 +35,7 @@ void main(void) {
         finalColor += col * d;
     }
 
-    gl_FragColor = vec4(finalColor, 1.0);
+    fragColor = vec4(finalColor, 1.0);
 }
 
 

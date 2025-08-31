@@ -2,6 +2,8 @@ uniform vec2 resolution;
 uniform float time;
 uniform vec2 mouse;
 
+out vec4 fragColor;
+
 void main(void){
     vec2 r=resolution;
     vec2 p=(gl_FragCoord.xy*2.-r) / min(r.x,r.y) - mouse;
@@ -9,5 +11,5 @@ void main(void){
         {
             p.xy=abs(p)/dot(p,p) - vec2(.9+cos(time*.2) *.4);
         }
-        gl_FragColor=vec4(p.xxy,1);
+        fragColor=vec4(p.xxy,1);
 }

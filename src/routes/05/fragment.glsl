@@ -4,6 +4,8 @@ uniform vec2 resolution;
 uniform float time;
 uniform vec2 mouse;
 
+out vec4 fragColor;
+
 void main(void){ 
   	vec3 c;
 	float l,z=time;
@@ -18,6 +20,6 @@ void main(void){
 		uv += p / l * (sin(z) + 1.) * abs(sin(l * 9. - z - z));
 		c[i] = 0.01 / length(mod(uv, 1.) - .5);
 	}
-	gl_FragColor = vec4(c / l, time);
+	fragColor = vec4(c / l, time);
 }
 
