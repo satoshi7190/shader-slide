@@ -17,19 +17,7 @@ float sdCircle(vec2 p, float r) {
 
 float random(vec2 st) {
     return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
-}
-                    
-float noise(vec2 st) {
-    vec2 i = floor(st);
-    vec2 f = fract(st);
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(mix(random(i), random(i + vec2(1.0, 0.0)), u.x),
-                mix(random(i + vec2(0.0, 1.0)), random(i + vec2(1.0)), u.x), u.y);
-}
-
-mat2 rotate2d(float angle) {
-    return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-}
+}                 
 
 float ripple(vec2 center, vec2 uv, float time, float freq, float amp) {
     float dist = distance(uv, center);
@@ -46,27 +34,19 @@ void main() {
     
     for (int i = 0; i < 3; i++) {
         float fi = float(i);
-        vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * st;
         float radius = 0.2 + fi * 0.15;
-        float circle = sdCircle(rotSt, radius);
+        float circle = sdCircle(st, radius);
         
         float hue = fi * 0.3 + time * 0.1;
         vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));
         
         float d = abs(circle);
-        color += glow(d, 0.8, 100.0) * ringColor * 0.4;
-        color += glow(d, 0.4, 20.0) * ringColor * 0.6;
-        color += glow(d, 0.2, 5.0) * ringColor * 0.8;
+        color += glow(d, 0.5, 30.0) * ringColor * 0.7;
     }
     
     float waves = ripple(vec2(0.0), st, time * 3.0, 20.0, 0.3);
     color += abs(waves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
     
-    
-    float centerDist = length(st);
-    float vignette = 1.0 - smoothstep(0.5, 1.2, centerDist);
-    color *= vignette;
-
     fragColor = vec4(color, 1.0);
 }
 
