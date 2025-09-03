@@ -1,34 +1,25 @@
 uniform vec2 resolution;
 uniform float time;
-uniform sampler2D u_audioTex;
-uniform float u_audioBins;
+uniform vec2 mouse; // 正規化されたマウス座標 (-1.0 to 1.0)
 
-
-
-// 色彩変換関数
 vec3 hsv2rgb(vec3 c) {
     vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
     vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-
-// 光彩エフェクト関数
 float glow(float d, float strength, float falloff) {
     return strength / (1.0 + d * d * falloff);
 }
 
-// 図形描画関数
 float sdCircle(vec2 p, float r) {
     return length(p) - r;
 }
 
-// ノイズ系関数 乱数
 float random(vec2 st) {
     return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
 }
-
-// ノイズ系関数 スムーズノイズ
+                    
 float noise(vec2 st) {
     vec2 i = floor(st);
     vec2 f = fract(st);
@@ -37,110 +28,108 @@ float noise(vec2 st) {
                 mix(random(i + vec2(0.0, 1.0)), random(i + vec2(1.0)), u.x), u.y);
 }
 
-// 変形関数 回転
 mat2 rotate2d(float angle) {
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
-// 波紋エフェクト関数
 float ripple(vec2 center, vec2 uv, float time, float freq, float amp) {
     float dist = distance(uv, center);
     return sin(dist * freq - time) * amp * (1.0 / (1.0 + dist * 2.0));
 }
 
-// より滑らかな補間
-float smootherstep(float edge0, float edge1, float x) {
-    x = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
-    return x * x * x * (x * (x * 6.0 - 15.0) + 10.0);
+// 3D変換用の関数
+vec2 apply3DTilt(vec2 uv, vec2 mousePos) {
+    // マウス位置から傾き角度を計算
+    float tiltX = mousePos.x * 0.3; // X軸周りの回転（上下の傾き）
+    float tiltY = mousePos.y * 0.3; // Y軸周りの回転（左右の傾き）
+    
+    // 3D座標として扱う（Z=0の平面）
+    vec3 pos3d = vec3(uv, 0.0);
+    
+    // X軸周りの回転
+    float cosX = cos(tiltX);
+    float sinX = sin(tiltX);
+    pos3d.yz = mat2(cosX, -sinX, sinX, cosX) * pos3d.yz;
+    
+    // Y軸周りの回転
+    float cosY = cos(tiltY);
+    float sinY = sin(tiltY);
+    pos3d.xz = mat2(cosY, sinY, -sinY, cosY) * pos3d.xz;
+    
+    // パースペクティブ投影（奥行き効果）
+    float perspective = 1.0 + pos3d.z * 0.5;
+    
+    return pos3d.xy / perspective;
+}
+
+// より自然な3D変換（推奨）
+vec2 apply3DTiltSmooth(vec2 uv, vec2 mousePos) {
+    // マウス位置を滑らかに変換
+    vec2 tilt = mousePos * 0.4;
+    
+    // 遠近感のある変形
+    float centerDist = length(uv);
+    float distortionAmount = 0.2 * centerDist;
+    
+    // マウス方向への傾斜
+    vec2 tiltedUV = uv;
+    tiltedUV.x += tilt.x * (1.0 - centerDist * 0.3);
+    tiltedUV.y += tilt.y * (1.0 - centerDist * 0.3);
+    
+    // 奥行きによるスケール調整
+    float depthScale = 1.0 + dot(tilt, normalize(uv)) * distortionAmount;
+    tiltedUV *= depthScale;
+    
+    return tiltedUV;
+}
+
+// パララックス効果版
+vec2 applyParallax(vec2 uv, vec2 mousePos, float layer) {
+    // レイヤーごとに異なる深度での視差効果
+    float depth = layer * 0.1;
+    vec2 offset = mousePos * depth;
+    return uv + offset;
 }
 
 out vec4 fragColor;
 
 void main() {
-// UV座標の計算
-    vec2 uv = gl_FragCoord.xy / resolution.xy;
-    vec2 st = (uv - 0.5) * 2.0;
+    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
     st.x *= resolution.x / resolution.y;
-
+    
+    // マウス連動3D変換を適用
+    st = apply3DTiltSmooth(st, mouse);
+    
     vec3 color = vec3(0.0);
-
-    float u_intensity = 0.1; // 強度調整用の変数
-
-     // 方法1: 直接的なアクセス
-        // 低音域だけでビジュアル作成（ドラムキックに反応）
-    float bass = texture(u_audioTex, vec2(0.1, 0.5)).r;
     
-    // 高音域だけでビジュアル作成（シンバルやハイハットに反応）
-    float treble = texture(u_audioTex, vec2(0.9, 0.5)).r;
-
-// Magic circle rings
-for (int i = 0; i < 5; i++) {
-    // float fi = float(i);
-    float fi = float(i) * bass * 5.0; // 低音域に基づいて回転速度を調整
-    vec2 rotSt = rotate2d(time * (0.3 + fi * 0.1) * u_intensity) * st;
-    float radius = 0.1 + fi * 0.15;
-    float ring = sdCircle(rotSt, radius);
-    
-    float hue = (fi * 0.2 + time * 0.3) + atan(rotSt.y, rotSt.x) / (2.0 * 3.14159);
-    vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));
-    float d = abs(ring) - 0.005;
-    color += glow(d, 1.0, 150.0) * ringColor * 0.3;
-    color += glow(d, 0.5, 30.0) * ringColor * 0.5;
-    color += glow(d, 0.2, 8.0) * ringColor * 0.7;
-}
-
- fragColor = vec4(color, 1.0);
-//  return;
-
-
-// 波紋効果
-float waves = 0.0;
-waves += ripple(vec2(0.0), st, time * 4.0 * u_intensity, 25.0, 0.4);
-waves += ripple(vec2(0.4, 0.4), st, time * 3.0 * u_intensity, 18.0, 0.3);
-waves += ripple(vec2(-0.3, 0.2), st, time * 2.5 * u_intensity, 22.0, 0.2);
-
-
-// パーティクル効果
-vec2 particleCoord = st * 12.0;           // 12x12のグリッドに分割
-vec2 particleId = floor(particleCoord);    // セルのID
-vec2 particlePos = fract(particleCoord);   // セル内の位置
-
-float sparkle = 0.0;
-
-// 9近傍セルをチェック（3x3）
-for (int x = -1; x <= 1; x++) {
-    for (int y = -1; y <= 1; y++) {
-        vec2 neighbor = vec2(float(x), float(y));
-        vec2 point = vec2(0.5) + neighbor;
-        float randomOffset = random(particleId + neighbor);
-
-        // 各セルに動くパーティクルを配置
-        point += 0.3 * sin(time * 3.0 * u_intensity + randomOffset * 6.28) * vec2(1.0);
-        float dist = length(point - particlePos);
-
-        // 点滅効果
-        sparkle += smootherstep(0.08, 0.0, dist) * // サイズ拡大
-          (0.8 + 0.2 * sin(time * 6.0 * u_intensity + randomOffset * 10.0)); 
+    for (int i = 0; i < 3; i++) {
+        float fi = float(i);
+        
+        // 各リングに異なるパララックス効果を適用
+        vec2 layeredSt = applyParallax(st, mouse, fi);
+        vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * layeredSt;
+        
+        float radius = 0.2 + fi * 0.15;
+        float circle = sdCircle(rotSt, radius);
+        
+        // 色相にマウス位置を反映
+        float hue = fi * 0.3 + time * 0.1 + length(mouse) * 0.2;
+        vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));
+        
+        float d = abs(circle);
+        color += glow(d, 0.8, 100.0) * ringColor * 0.4;
+        color += glow(d, 0.4, 20.0) * ringColor * 0.6;
+        color += glow(d, 0.2, 5.0) * ringColor * 0.8;
     }
-}
-
-
-float centerDist = length(st);
-vec3 centerGlow = hsv2rgb(vec3(time * 0.05, 0.9, 1.0));
-
-// 中央からの放射光
-color += glow(centerDist, 0.8, 2.0) * centerGlow * 0.3;
-
-// 各エフェクトを合成
-// color += abs(waves) * hsv2rgb(vec3(time * 0.1 + 0.3, 0.7, 0.6));
-color += sparkle * hsv2rgb(vec3(time * 0.15 + 0.6, 0.9, 1.0)) * 0.8;
-
-// ビネット効果（周辺減光）
-// float vignette = 1.0 - smoothstep(0.5, 1.2, centerDist);
-// color *= vignette;
-// color *= u_intensity;
-
+    
+    // 波紋もマウス位置に影響を受ける
+    vec2 waveCenter = mouse * 0.3; // マウス位置付近を中心に
+    float waves = ripple(waveCenter, st, time * 3.0, 20.0, 0.3);
+    color += abs(waves) * hsv2rgb(vec3(time * 0.1 + length(mouse) * 0.1, 0.7, 0.6));
+    
+    float centerDist = length(st);
+    float vignette = 1.0 - smoothstep(0.5, 1.2, centerDist);
+    color *= vignette;
+    
     fragColor = vec4(color, 1.0);
 }
-
-

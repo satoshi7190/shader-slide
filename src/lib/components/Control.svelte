@@ -2,19 +2,68 @@
 	import Icon from '@iconify/svelte';
 	import { nextPage } from '$lib/utils';
 	import { isFullCanvas, isFullScreen } from '$lib/store';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		show: boolean;
 	}
 
 	let { show }: Props = $props();
+	let isHovered = $state(false);
+	let controlsElement = $state<HTMLDivElement | null>(null);
+
+	onMount(() => {
+		let timeoutId: number;
+
+		const handleMouseMove = () => {
+			if ($isFullScreen && !show) {
+				isHovered = true;
+				clearTimeout(timeoutId);
+
+				// 2秒後に自動的に非表示
+				timeoutId = setTimeout(() => {
+					isHovered = false;
+				}, 2000);
+			}
+		};
+
+		const handleMouseLeave = () => {
+			if ($isFullScreen && !show) {
+				clearTimeout(timeoutId);
+				timeoutId = setTimeout(() => {
+					isHovered = false;
+				}, 500);
+			}
+		};
+
+		// フルスクリーン時のマウス移動監視
+		document.addEventListener('mousemove', handleMouseMove);
+		if (controlsElement) {
+			controlsElement.addEventListener('mouseleave', handleMouseLeave);
+		}
+
+		return () => {
+			document.removeEventListener('mousemove', handleMouseMove);
+			if (controlsElement) {
+				controlsElement.removeEventListener('mouseleave', handleMouseLeave);
+			}
+			clearTimeout(timeoutId);
+		};
+	});
+
+	// 表示状態の計算
+	let shouldShow = $derived.by(() => {
+		return show || ($isFullScreen ? isHovered : false);
+	});
 </script>
 
 <div
-	class="absolute bottom-0 z-10 flex w-full justify-between bg-black/50 p-1 px-4 text-sm shadow-lg {show
-		? ''
-		: 'opacity-0 transition-opacity duration-300 hover:opacity-70'}"
+	bind:this={controlsElement}
+	class="absolute bottom-0 z-10 flex w-full justify-between bg-black/50 p-1 px-4 text-sm shadow-lg transition-opacity duration-300 {shouldShow
+		? 'opacity-100'
+		: 'opacity-0'}"
 >
+	<!-- 既存のボタン群 -->
 	<div class="flex gap-2">
 		<button
 			class="grid aspect-square cursor-pointer place-items-center rounded-full bg-white/90"

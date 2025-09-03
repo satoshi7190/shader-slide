@@ -91,7 +91,7 @@
 	});
 </script>
 
-<div class="h-full w-full" bind:this={editElement}></div>
+<div class="h-full w-1/2" bind:this={editElement}></div>
 
 <style>
 	/* エディタのスタイル */
