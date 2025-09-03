@@ -1,5 +1,7 @@
 uniform vec2 resolution;
 uniform float time;
+uniform sampler2D u_audioTex;
+uniform float u_audioBins;
 
 vec3 hsv2rgb(vec3 c) {
     vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
@@ -43,9 +45,18 @@ void main() {
     st.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
+
+     float u_intensity = 0.1; // 強度調整用の変数
+
+     // 方法1: 直接的なアクセス
+        // 低音域だけでビジュアル作成（ドラムキックに反応）
+    float bass = texture(u_audioTex, vec2(0.1, 0.5)).r;
+    
+    // 高音域だけでビジュアル作成（シンバルやハイハットに反応）
+    float treble = texture(u_audioTex, vec2(0.9, 0.5)).r;
     
     for (int i = 0; i < 3; i++) {
-        float fi = float(i);
+        float fi = float(i) * bass;
         vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * st;
         float radius = 0.2 + fi * 0.15;
         float circle = sdCircle(rotSt, radius);
@@ -63,8 +74,10 @@ void main() {
     color += abs(waves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
     float particles = noise(st * 8.0 + time * 0.5) * 0.5 + 0.5;
     particles += noise(st * 16.0 - time * 0.3) * 0.3;
-    color += particles  * 0.2;
+       color += particles  * 0.2;
 
+
+    
     float centerDist = length(st);
     float vignette = 1.0 - smoothstep(0.5, 1.2, centerDist);
     color *= vignette;
