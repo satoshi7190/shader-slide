@@ -6,7 +6,7 @@ uniform vec2 mouse;
 
 out vec4 fragColor;
 
-void main(void) {
+void main() {
     vec2 R = resolution.xy;
     vec2 uv = (gl_FragCoord.xy*2.-R)/R.y;
 

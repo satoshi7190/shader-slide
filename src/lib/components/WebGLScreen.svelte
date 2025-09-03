@@ -177,10 +177,6 @@
 		gl.canvas.width = width;
 		gl.canvas.height = height;
 		gl.viewport(0, 0, width, height);
-
-		gl.canvas.width = width;
-		gl.canvas.height = height;
-		gl.viewport(0, 0, width, height);
 		gl.useProgram(program);
 
 		// Microphone init (async)
@@ -197,14 +193,36 @@
 				src.connect(analyser);
 
 				// Allocate 1xN texture storage depending on WebGL version
-				const isWebGL2 = typeof WebGL2RenderingContext !== 'undefined' && (gl as any) instanceof WebGL2RenderingContext;
+				const isWebGL2 =
+					typeof WebGL2RenderingContext !== 'undefined' &&
+					(gl as any) instanceof WebGL2RenderingContext;
 				gl.activeTexture(gl.TEXTURE0 + audioTexUnit);
 				gl.bindTexture(gl.TEXTURE_2D, audioTexture);
 				if (isWebGL2) {
 					const gl2 = gl as unknown as WebGL2RenderingContext;
-					gl2.texImage2D(gl2.TEXTURE_2D, 0, gl2.R8, audioBins, 1, 0, gl2.RED, gl2.UNSIGNED_BYTE, freqData);
+					gl2.texImage2D(
+						gl2.TEXTURE_2D,
+						0,
+						gl2.R8,
+						audioBins,
+						1,
+						0,
+						gl2.RED,
+						gl2.UNSIGNED_BYTE,
+						freqData
+					);
 				} else {
-					gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, audioBins, 1, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, freqData);
+					gl.texImage2D(
+						gl.TEXTURE_2D,
+						0,
+						gl.LUMINANCE,
+						audioBins,
+						1,
+						0,
+						gl.LUMINANCE,
+						gl.UNSIGNED_BYTE,
+						freqData
+					);
 				}
 			} catch (e) {
 				console.error('Microphone init failed', e);
@@ -235,14 +253,36 @@
 			// Update audio texture + uniforms
 			if (analyser && freqData && audioTexture) {
 				analyser.getByteFrequencyData(freqData);
-				const isWebGL2 = typeof WebGL2RenderingContext !== 'undefined' && (gl as any) instanceof WebGL2RenderingContext;
+				const isWebGL2 =
+					typeof WebGL2RenderingContext !== 'undefined' &&
+					(gl as any) instanceof WebGL2RenderingContext;
 				gl.activeTexture(gl.TEXTURE0 + audioTexUnit);
 				gl.bindTexture(gl.TEXTURE_2D, audioTexture);
 				if (isWebGL2) {
 					const gl2 = gl as unknown as WebGL2RenderingContext;
-					gl2.texSubImage2D(gl2.TEXTURE_2D, 0, 0, 0, audioBins, 1, gl2.RED, gl2.UNSIGNED_BYTE, freqData);
+					gl2.texSubImage2D(
+						gl2.TEXTURE_2D,
+						0,
+						0,
+						0,
+						audioBins,
+						1,
+						gl2.RED,
+						gl2.UNSIGNED_BYTE,
+						freqData
+					);
 				} else {
-					gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, audioBins, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, freqData);
+					gl.texSubImage2D(
+						gl.TEXTURE_2D,
+						0,
+						0,
+						0,
+						audioBins,
+						1,
+						gl.LUMINANCE,
+						gl.UNSIGNED_BYTE,
+						freqData
+					);
 				}
 				if (audioTexUniform) gl.uniform1i(audioTexUniform, audioTexUnit);
 				if (audioBinsUniform) gl.uniform1f(audioBinsUniform, audioBins);

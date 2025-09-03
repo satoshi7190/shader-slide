@@ -2,7 +2,29 @@ import { goto } from '$app/navigation';
 import { page } from '$app/state';
 
 // ページのルートを定義
-const routes = ['/', '/01', '/02', '/03', '/04', '/05', '/06', '/07', '/08', '/09', '/10'];
+const routes = [
+	'/',
+	'/01',
+	'/02',
+	'/03',
+	'/04',
+	'/05',
+	'/06',
+	'/07',
+	'/08',
+	'/09',
+	'/10',
+	'/11',
+	'/12',
+	'/13',
+	'/14',
+	'/15',
+	'/16',
+	'/17',
+	'/18',
+	'/19',
+	'/20'
+];
 
 export const nextPage = (type: 'next' | 'prev') => {
 	const currentPath = page.url.pathname;

@@ -3,7 +3,7 @@ uniform float time;
 
 out vec4 fragColor;
 
-void main(void) {
+void main() {
     vec2 uv = (gl_FragCoord.xy - 0.5 * resolution.xy) / min(resolution.x, resolution.y);
 
     vec2 st = gl_FragCoord.xy/resolution.xy;

@@ -6,7 +6,7 @@ uniform vec2 mouse;
 
 out vec4 fragColor;
 
-void main(void) {
+void main() {
   	float s = 0.0, v = 0.0;
 	vec2 uv = (gl_FragCoord.xy / resolution.xy) * 2.0 - 1.;
     float time = (time-2.0)*58.0;

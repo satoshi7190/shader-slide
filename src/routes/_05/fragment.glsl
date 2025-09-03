@@ -6,7 +6,7 @@ uniform vec2 mouse;
 
 out vec4 fragColor;
 
-void main(void){ 
+void main(){ 
   	vec3 c;
 	float l,z=time;
 	for(int i=0;i<3;i++) {

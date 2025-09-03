@@ -15,7 +15,7 @@ vec3 palette( float t ) {
     return a + b*cos( 6.28318*(c*t+d) );
 }
 
-void main(void) {
+void main() {
     vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / resolution.y;
     vec2 uv0 = uv;
     vec3 finalColor = vec3(0.0);

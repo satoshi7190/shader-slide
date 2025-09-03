@@ -5,7 +5,7 @@ uniform float u_audioBins;    // number of bins (width)
 
 out vec4 fragColor;
 
-void main(void) {
+void main() {
     // normalized device coords with aspect fix (center = 0)
     vec2 uv = (gl_FragCoord.xy - 0.5 * resolution.xy) / min(resolution.x, resolution.y);
 
