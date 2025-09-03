@@ -12,3 +12,10 @@
 @utility block-right {
 	@apply absolute top-[15%] right-[3%] flex w-1/2 flex-col text-[100%] text-white;
 }
+
+@utility c-no-drag-icon {
+	/* アイコン画像のドラッグを無効にする */
+	user-drag: none;
+	-webkit-user-drag: none;
+	-moz-user-select: none;
+}

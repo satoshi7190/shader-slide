@@ -4,13 +4,13 @@
 	import { twMerge } from 'tailwind-merge';
 	import { nextPage } from '$lib/utils';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
-	import { isErrorMessage } from '$lib/store';
+	import { isErrorMessage, isFullCanvas } from '$lib/store';
 	interface Props {
 		fs: string;
 		className?: string;
 	}
 
-	let { fs, className = 'w-1/2' }: Props = $props();
+	let { fs, className = $isFullCanvas ? 'w-full' : 'w-1/2' }: Props = $props();
 
 	let canvas: HTMLCanvasElement | null = null;
 	let gl: WebGLRenderingContext | null = null;
@@ -354,6 +354,10 @@
 		if (!canvas) return;
 		nextPage('next');
 	};
+
+	isFullCanvas.subscribe((value) => {
+		if (gl && canvas) fitCanvas(gl, canvas);
+	});
 </script>
 
 <canvas
@@ -399,12 +403,6 @@
 <svelte:window
 	on:resize={() => {
 		if (gl && canvas) {
-			// const width = window.innerWidth;
-			// const height = window.innerHeight;
-			// canvas.width = width;
-			// canvas.height = height;
-			// gl.viewport(0, 0, width, height);
-
 			if (gl && canvas) fitCanvas(gl, canvas);
 		}
 	}}

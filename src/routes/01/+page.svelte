@@ -10,7 +10,7 @@
 
 <span class="title">自己紹介</span>
 <div class="block-left flex flex-col items-center justify-center pt-[5%]">
-	<img class="aspect-square w-[60%] rounded-full" src="./84182110.png" />
+	<img class="aspect-square w-[60%] rounded-full c-no-drag-icon" src="./icon.png" />
 </div>
 <div class="block-right">
 	<span>株式会社MIERUNE</span>

@@ -1,9 +1,34 @@
 <script lang="ts">
 	import '../app.css';
 	import { nextPage } from '$lib/utils';
+	import { isFullScreen } from '$lib/store';
+
+	import Control from '$lib/components/Control.svelte';
+	import { onMount } from 'svelte';
 
 	let { children } = $props();
 
+	// 画面サイズの状態
+	let screenWidth = $state(0);
+	let screenHeight = $state(0);
+
+	onMount(() => {
+		updateScreenSize(); // 初期サイズを設定
+	});
+
+	// 16:9以下かどうかを判定する変数
+	let isNarrowerThan16by9 = $derived.by(() => {
+		if (screenWidth === 0 || screenHeight === 0) return false;
+		const currentAspectRatio = screenWidth / screenHeight;
+		const sixteenByNineRatio = 16 / 9; // 約1.778
+		return currentAspectRatio <= sixteenByNineRatio;
+	});
+
+	// 画面サイズを更新する関数
+	const updateScreenSize = () => {
+		screenWidth = window.innerWidth;
+		screenHeight = window.innerHeight;
+	};
 	// ページのルートを定義
 
 	// キーボードイベントハンドラー
@@ -14,6 +39,9 @@
 		} else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
 			// 前のページへ
 			nextPage('prev');
+		} else if (event.key === 'F1') {
+			// フルスクリーンの切り替え
+			$isFullScreen = !$isFullScreen;
 		}
 	};
 </script>
@@ -24,4 +52,6 @@
 	</div>
 </div>
 
-<svelte:window on:keydown={handleKeydown} />
+<Control show={isNarrowerThan16by9} />
+
+<svelte:window onkeydown={handleKeydown} onresize={updateScreenSize} />

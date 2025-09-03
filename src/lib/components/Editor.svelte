@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ace from 'ace-builds/src-noconflict/ace';
 	import { debounce } from 'es-toolkit';
+	import { isFullCanvas } from '$lib/store';
 
 	interface Props {
 		fs: string;
@@ -72,10 +73,25 @@
 			// 現在のコードを取得
 			debounceShaderUpdate();
 		});
+
+		// エディッタの表示・非表示を切り替える関数
+		const toggleEditorVisibility = (value: boolean) => {
+			const editorElement = editor.container;
+			if (value) {
+				editorElement.style.display = 'none';
+			} else {
+				editorElement.style.display = 'block';
+				editor.resize(); // エディタを再描画
+			}
+		};
+
+		isFullCanvas.subscribe((value) => {
+			toggleEditorVisibility(value);
+		});
 	});
 </script>
 
-<div id="editor" class="h-full w-1/2" bind:this={editElement}></div>
+<div class="h-full w-full" bind:this={editElement}></div>
 
 <style>
 	/* エディタのスタイル */
