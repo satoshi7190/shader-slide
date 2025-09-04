@@ -18,9 +18,8 @@ void main() {
     st.x *= resolution.x / resolution.y;
     
     float circle = sdCircle(st, 0.3);
-    
-    // 距離に基づいて色を変化させる
     float d = abs(circle);
+    
     float intensity = 1.0 - smoothstep(0.0, 0.1, d);
     
     vec3 color = hsv2rgb(vec3(time * 0.1, 0.8, 1.0)) * intensity;
