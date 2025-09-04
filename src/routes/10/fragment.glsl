@@ -15,17 +15,6 @@ float sdCircle(vec2 p, float r) {
     return length(p) - r;
 }
 
-float random(vec2 st) {
-    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
-}                 
-
-float ripple(vec2 center, vec2 uv, float time, float freq, float amp) {
-    float dist = distance(uv, center);
-    return sin(dist * freq - time) * amp * (1.0 / (1.0 + dist * 2.0));
-}
-
-
-
 out vec4 fragColor;
 
 void main() {
