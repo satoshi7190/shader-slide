@@ -115,7 +115,8 @@
 			highlightSelectedWord: true,
 			enableBasicAutocompletion: true,
 			enableLiveAutocompletion: true,
-			enableSnippets: true
+			enableSnippets: true,
+			readOnly: true
 		});
 
 		editor.session.setUseWrapMode(true);
@@ -126,19 +127,19 @@
 			applyHighlights(highlightLines);
 		}
 
-		// const updateCode = debounce(() => {
-		// 	console.log('updateCode called');
-		// 	if (!isRun) return;
-		// 	run.set(++$run);
+		const updateCode = debounce((_code) => {
+			if (!isRun) return;
+			console.log('updateCode called');
 
-		// 	// 必要に応じてfsストアを更新
-		// 	// fs.set(shaderCode);
-		// }, 300);
+			fs.set(_code);
+			run.set(++$run);
+		}, 300);
 
 		// エディタの内容が変更されたときの処理
-		// editor.session.on('change', () => {
-		// 	updateCode();
-		// });
+		editor.session.on('change', () => {
+			const code = editor.getValue();
+			updateCode(code);
+		});
 
 		// エディッタの表示・非表示を切り替える関数
 		const toggleEditorVisibility = (value: boolean) => {
@@ -156,6 +157,7 @@
 		});
 
 		fs.subscribe((value) => {
+			if (isRun) return;
 			if (editor && value !== editor.getValue()) {
 				const cursorPosition = editor.getCursorPosition();
 				editor.setValue(value, -1);
@@ -170,6 +172,7 @@
 
 		run.subscribe((value) => {
 			clearHighlights();
+			editor.setReadOnly(false);
 		});
 
 		// クリーンアップ
