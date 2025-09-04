@@ -88,6 +88,12 @@
 		}
 	});
 
+	const jumpToLine = (lineNumber: number) => {
+		if (editor) {
+			editor.gotoLine(lineNumber + 1, 0, true); // 1ベースでジャンプ
+		}
+	};
+
 	onMount(() => {
 		editor = ace.edit(editElement);
 
@@ -254,6 +260,7 @@
 		overflow-x: hidden !important;
 		-webkit-overflow-scrolling: touch !important;
 		scrollbar-gutter: stable !important;
+		scroll-behavior: smooth;
 
 		&::-webkit-scrollbar {
 			width: 5px !important;
