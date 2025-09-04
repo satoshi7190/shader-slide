@@ -345,11 +345,6 @@
 		}
 	};
 
-	const handleClick = (event: MouseEvent) => {
-		if (!canvas) return;
-		nextPage('next');
-	};
-
 	// isFullCanvasの変更を監視して適切にリサイズ
 	let previousFullCanvas = $isFullCanvas;
 	$effect(() => {
@@ -408,7 +403,6 @@
 		mouseX = (xPx * 2.0 - gl.drawingBufferWidth) / minSide;
 		mouseY = (yPxBottom * 2.0 - gl.drawingBufferHeight) / minSide;
 	}}
-	onclick={handleClick}
 	class="z-0 h-full {$isFullCanvas ? 'w-full' : 'w-1/2'}"
 >
 </canvas>

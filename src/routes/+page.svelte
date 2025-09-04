@@ -1,6 +1,7 @@
 <script lang="ts">
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
+	import Overlay from '$lib/components/Overlay.svelte';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
@@ -9,7 +10,7 @@
 	});
 </script>
 
-<div class="pointer-events-none absolute top-0 left-0 z-10 h-full w-full bg-black/50">
+<Overlay>
 	<span class="c-text-shadow absolute top-[10%] left-1/2 -translate-x-1/2 text-[200%] text-white"
 		>GLSL で解き放つ！</span
 	>
@@ -22,7 +23,7 @@
 	<span class="absolute bottom-[24%] left-1/2 -translate-x-1/2 text-[100%] text-white"
 		>Satoshi Komatsu
 	</span>
-</div>
+</Overlay>
 
 <style>
 	.c-text-shadow {

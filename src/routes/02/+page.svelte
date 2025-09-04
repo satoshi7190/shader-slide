@@ -2,6 +2,7 @@
 	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
+	import Overlay from '$lib/components/Overlay.svelte';
 
 	import { onMount } from 'svelte';
 
@@ -11,7 +12,7 @@
 	});
 </script>
 
-<div class="pointer-events-none absolute top-0 left-0 z-10 h-full w-full bg-black/50">
+<Overlay>
 	<span class="title">GLSL（OpenGL Shading Language）とは</span>
 	<div class="absolute top-[15%] flex flex-col px-[3%] text-[100%] text-white">
 		<span
@@ -23,4 +24,4 @@
 		<span>・頂点・フラグメント処理を記述 </span>
 		<span>・リアルタイム3D描画に必須</span>
 	</div>
-</div>
+</Overlay>
