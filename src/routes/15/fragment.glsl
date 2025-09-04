@@ -62,7 +62,7 @@ float distortedCircle(vec2 p, float r, float time, float intensity) {
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5);
+    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
     st.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
@@ -71,7 +71,7 @@ void main() {
     for (int i = 0; i < 3; i++) {
         float fi = float(i);
         vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * st;
-        float radius = 0.1 + fi * 0.1;
+        float radius = 0.2 + fi * 0.15;
         
         // 各リングに異なる歪み強度を適用
         float intensity = 1.0 + fi * 0.5;

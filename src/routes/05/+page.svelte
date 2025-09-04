@@ -13,4 +13,4 @@
 	const highlightLines = $state(highlightRange(6, 8));
 </script>
 
-<Editor {highlightLines} title={'座標を中心基準に正規化する'} />
+<Editor {highlightLines} title={'中心基準に正規化'} />

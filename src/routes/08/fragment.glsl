@@ -14,7 +14,7 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5);
+    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
     st.x *= resolution.x / resolution.y;
     
     float circle = sdCircle(st, 0.3);
