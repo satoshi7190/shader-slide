@@ -8,6 +8,14 @@
 		fs.set(fragment);
 		isFullCanvas.set(false);
 	});
+
+	// ハイライトしたい行を定義
+	const highlightLines = $state([
+		{ line: 2, message: 'Syntax error here' },
+		{ line: 5, message: 'This might cause issues' },
+		{ line: 8 },
+		{ line: 12, className: 'ace-info-line', message: 'Important note' }
+	]);
 </script>
 
-<Editor />
+<Editor {highlightLines} />
