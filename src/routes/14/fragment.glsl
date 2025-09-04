@@ -67,15 +67,15 @@ void main() {
     float particles1 = noise(rotatedSt1 * 8.0 + time * 0.5) * 0.5 + 0.5;
     particles1 += noise(rotatedSt1 * 16.0 - time * 0.3) * 0.3;
 
-    vec2 rotatedSt2 = rotate2d(time * -0.5) * st; // 逆回転
+    vec2 rotatedSt2 = rotate2d(time * -0.5) * st;
     float particles2 = noise(rotatedSt2 * 6.0 + time * 0.4) * 0.4;
 
-    vec2 rotatedSt3 = rotate2d(time * 0.8) * st; // 高速回転
+    vec2 rotatedSt3 = rotate2d(time * 0.8) * st; 
     float particles3 = noise(rotatedSt3 * 12.0 - time * 0.6) * 0.3;
 
-    color += particles1 * hsv2rgb(vec3(time * 0.1, 0.6, 1.0)) * 0.3; // 青系
-    color += particles2 * hsv2rgb(vec3(time * 0.15 + 0.3, 0.7, 0.8)) * 0.2; // 緑系
-    color += particles3 * hsv2rgb(vec3(time * 0.2 + 0.6, 0.8, 0.9)) * 0.2; // 赤系
+    color += particles1 * hsv2rgb(vec3(time * 0.1, 0.6, 1.0)) * 0.3; 
+    color += particles2 * hsv2rgb(vec3(time * 0.15 + 0.3, 0.7, 0.8)) * 0.2; 
+    color += particles3 * hsv2rgb(vec3(time * 0.2 + 0.6, 0.8, 0.9)) * 0.2; 
 
     fragColor = vec4(color, 1.0);
 }
