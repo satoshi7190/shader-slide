@@ -48,11 +48,6 @@ void main() {
     
     float waves = ripple(vec2(0.0), st, time * 3.0, 20.0, 0.3);
     color += abs(waves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
-    
-    
-    float centerDist = length(st);
-    float vignette = 1.0 - smoothstep(0.5, 1.2, centerDist);
-    color *= vignette;
 
     fragColor = vec4(color, 1.0);
 }

@@ -92,10 +92,5 @@ void main() {
     color += particles2 * hsv2rgb(vec3(time * 0.15 + 0.3, 0.7, 0.8)) * 0.2; // 緑系
     color += particles3 * hsv2rgb(vec3(time * 0.2 + 0.6, 0.8, 0.9)) * 0.2; // 赤系
 
-    // ビネット効果
-    float centerDist = length(st);
-    float vignette = 1.0 - smoothstep(0.5, 1.2, centerDist);
-    color *= vignette;
-
     fragColor = vec4(color, 1.0);
 }

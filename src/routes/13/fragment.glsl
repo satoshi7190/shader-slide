@@ -65,12 +65,6 @@ void main() {
     particles += noise(st * 16.0 - time * 0.3) * 0.3;
     color += particles  * 0.2;
 
-    float centerDist = length(st);
-    float vignette = 1.0 - smoothstep(0.5, 1.2, centerDist);
-    color *= vignette;
-
- 
-
     fragColor = vec4(color, 1.0);
 }
 
