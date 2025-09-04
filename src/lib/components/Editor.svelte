@@ -51,7 +51,12 @@
 			const { line, className = 'ace-success-line', type = 'fullLine', message } = highlight;
 
 			// 範囲を作成（0ベースの行番号を使用）
-			const range = new ace.Range(line, 0, line, type === 'fullLine' ? 1 : Number.MAX_VALUE);
+			const range = new ace.Range(
+				line,
+				0,
+				line,
+				type === 'fullLine' ? Number.MAX_VALUE : Number.MAX_VALUE
+			);
 
 			// マーカーを追加
 			const markerId = editor.session.addMarker(range, className, type);

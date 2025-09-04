@@ -3,12 +3,6 @@ uniform float time;
 
 out vec4 fragColor;
 
-vec3 hsv2rgb(vec3 c) {
-    vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
-    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
-
 float sdCircle(vec2 p, float r) {
     return length(p) - r;
 }
@@ -19,10 +13,9 @@ void main() {
     
     float circle = sdCircle(st, 0.3);
     
-    // 距離に基づいて色を変化させる
+    // リング状に可視化
     float d = abs(circle);
     float intensity = 1.0 - smoothstep(0.0, 0.1, d);
-    
     vec3 color = vec3(1.0) * intensity;
     
     fragColor = vec4(color, 1.0);

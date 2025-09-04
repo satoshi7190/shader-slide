@@ -10,4 +10,4 @@
 	});
 </script>
 
-<Editor />
+<Editor title={'リング状に可視化'} />
