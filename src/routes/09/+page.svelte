@@ -13,4 +13,4 @@
 	const highlightLines = $state([...highlightRange(16, 18), ...highlightRange(27, 28)]);
 </script>
 
-<Editor {highlightLines} title={'グロー効果'} />
+<Editor {highlightLines} title={'ループ'} />
