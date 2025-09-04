@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ace from 'ace-builds/src-noconflict/ace';
 	import { isFullCanvas, fs, run } from '$lib/store';
+	import { nextPage } from '$lib/utils';
 
 	// --- 必要なモジュールのインポート ---
 	import 'ace-builds/src-noconflict/mode-glsl';
@@ -17,10 +18,12 @@
 	}
 
 	interface Props {
+		title?: string;
 		highlightLines?: HighlightLine[]; // ハイライトする行の配列
 	}
 
-	let { highlightLines = [] }: Props = $props();
+	let { highlightLines = [], title }: Props = $props();
+	let isRun = $state(false);
 
 	const workerUrl = new URL('ace-builds/src-noconflict/worker-glsl.js', import.meta.url).href;
 	ace.config.setModuleUrl('ace/mode/glsl_worker', workerUrl);
@@ -96,6 +99,7 @@
 
 	onMount(() => {
 		editor = ace.edit(editElement);
+		isRun = false;
 
 		// エディタのオプション
 		editor.setOptions({
@@ -167,14 +171,26 @@
 </script>
 
 <div class="flex h-full flex-col {$isFullCanvas ? 'w-0' : 'w-1/2'}">
-	<div class="flex w-full flex-1 justify-end bg-[#272822] px-2">
-		<button
-			class="grid cursor-pointer place-items-center rounded bg-gray-300 p-1"
-			onclick={() => {
-				// Run the shader code
-				run.set(++$run);
-			}}><span>run</span></button
-		>
+	<div class="flex w-full flex-1 justify-between bg-[#272822] px-2">
+		<div class="text-[200%] text-white">{title}</div>
+
+		{#if isRun}
+			<button
+				class="grid cursor-pointer place-items-center rounded bg-gray-300 p-1"
+				onclick={() => {
+					// Run the shader code
+					nextPage('next');
+				}}><span>run</span></button
+			>
+		{:else}
+			<button
+				class="grid cursor-pointer place-items-center rounded bg-gray-300 p-1"
+				onclick={() => {
+					// Run the shader code
+					run.set(++$run);
+					isRun = true;
+				}}><span>→</span></button
+			>{/if}
 	</div>
 	<div class="h-full w-full" bind:this={editElement}></div>
 </div>

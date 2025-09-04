@@ -18,4 +18,4 @@
 	]);
 </script>
 
-<Editor {highlightLines} title={'Shader Editor'} />
+<Editor {highlightLines} />

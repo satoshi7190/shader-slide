@@ -11,8 +11,6 @@
 		className?: string;
 	}
 
-	let { className = $isFullCanvas ? 'w-full' : 'w-1/2' }: Props = $props();
-
 	let canvas: HTMLCanvasElement | null = null;
 	let gl: WebGLRenderingContext | null = null;
 	let program: WebGLProgram | null = null;
