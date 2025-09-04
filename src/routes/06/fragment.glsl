@@ -3,31 +3,19 @@ uniform float time;
 
 out vec4 fragColor;
 
-vec3 hsv2rgb(vec3 c) {
-    vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
-    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
-
-float glow(float d, float strength, float falloff) {
-    return strength / (1.0 + d * d * falloff);
-}
-
 float sdCircle(vec2 p, float r) {
     return length(p) - r;
 }
-
+                    
 void main() {
     vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
     st.x *= resolution.x / resolution.y;
     
     float circle = sdCircle(st, 0.3);
-    float d = abs(circle);
     
-    vec3 color = hsv2rgb(vec3(time * 0.1, 0.8, 1.0));
-    color *= glow(d, 0.5, 20.0);
+    // 円の内側は黒、外側は白で可視化
+    vec3 color = vec3(step(0.0, circle));
     
     fragColor = vec4(color, 1.0);
 }
-                
 
