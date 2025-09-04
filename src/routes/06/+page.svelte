@@ -3,14 +3,14 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import { onMount } from 'svelte';
+	import { highlightRange } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
 		isFullCanvas.set(false);
 	});
 
-	// ハイライトしたい行を定義
-	const highlightLines = $state([{ line: 5 }, { line: 6 }, { line: 7 }]);
+	const highlightLines = $state(highlightRange(6, 8));
 </script>
 
-<Editor {highlightLines} title={'距離関数　図形'} />
+<Editor {highlightLines} title={'円を書く'} />

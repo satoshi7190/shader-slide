@@ -4,20 +4,13 @@
 	import { nextPage } from '$lib/utils';
 	import { debounce } from 'es-toolkit';
 	import { page } from '$app/state';
+	import type { HighlightLine } from '$lib/utils';
 
 	// --- 必要なモジュールのインポート ---
 	import 'ace-builds/src-noconflict/mode-glsl';
 	import 'ace-builds/src-noconflict/theme-monokai';
 	import 'ace-builds/src-noconflict/ext-language_tools';
 	import { onMount } from 'svelte';
-
-	// ハイライト設定の型定義
-	interface HighlightLine {
-		line: number; // 0ベースの行番号
-		className?: string; // CSSクラス名
-		type?: 'line' | 'fullLine' | 'text'; // ハイライトタイプ
-		message?: string; // オプショナルなメッセージ
-	}
 
 	interface Props {
 		title?: string;
@@ -50,11 +43,12 @@
 		highlights.forEach((highlight) => {
 			const { line, className = 'ace-success-line', type = 'fullLine', message } = highlight;
 
-			// 範囲を作成（0ベースの行番号を使用）
+			// 範囲を作成（行番号を1減らして調整）
+			const adjustedLine = Math.max(0, line - 1); // 1行上にシフト、負の値は0にクランプ
 			const range = new ace.Range(
-				line,
+				adjustedLine,
 				0,
-				line,
+				adjustedLine,
 				type === 'fullLine' ? Number.MAX_VALUE : Number.MAX_VALUE
 			);
 
@@ -80,8 +74,9 @@
 		});
 
 		// 最初のハイライト行にスクロール（複数ある場合）
+		// 最初のハイライト行にスクロール（調整済み）
 		if (highlights.length > 0) {
-			const firstLine = Math.min(...highlights.map((h) => h.line));
+			const firstLine = Math.min(...highlights.map((h) => Math.max(0, h.line - 1)));
 			editor.scrollToLine(firstLine, true, false, () => {});
 		}
 	};

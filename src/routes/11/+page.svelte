@@ -3,11 +3,14 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import { onMount } from 'svelte';
+	import { highlightRange } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
 		isFullCanvas.set(false);
 	});
+
+	const highlightLines = $state([...highlightRange(35, 37)]);
 </script>
 
-<Editor />
+<Editor {highlightLines} title={'グロー効果を重ねる'} />

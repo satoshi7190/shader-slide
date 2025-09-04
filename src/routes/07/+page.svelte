@@ -3,11 +3,14 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import { onMount } from 'svelte';
+	import { highlightRange } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
 		isFullCanvas.set(false);
 	});
+
+	const highlightLines = $state(highlightRange(16, 19));
 </script>
 
-<Editor title={'リング状に可視化'} />
+<Editor {highlightLines} title={'リング状にする'} />
