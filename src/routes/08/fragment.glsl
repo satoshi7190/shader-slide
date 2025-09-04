@@ -1,5 +1,3 @@
-
-
 uniform vec2 resolution;
 uniform float time;
 

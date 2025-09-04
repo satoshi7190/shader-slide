@@ -4,13 +4,14 @@
 	import { twMerge } from 'tailwind-merge';
 	import { nextPage } from '$lib/utils';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
-	import { isErrorMessage, isFullCanvas } from '$lib/store';
+	import { isErrorMessage, isFullCanvas, fs, run } from '$lib/store';
+	import { debounce } from 'es-toolkit';
+
 	interface Props {
-		fs: string;
 		className?: string;
 	}
 
-	let { fs, className = $isFullCanvas ? 'w-full' : 'w-1/2' }: Props = $props();
+	let { className = $isFullCanvas ? 'w-full' : 'w-1/2' }: Props = $props();
 
 	let canvas: HTMLCanvasElement | null = null;
 	let gl: WebGLRenderingContext | null = null;
@@ -121,8 +122,13 @@
 			return;
 		}
 
+		if (!$fs) {
+			isErrorMessage.set('Fragment shader code is empty.');
+			return;
+		}
+
 		const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-		const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fs);
+		const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, $fs);
 
 		if (!vertexShader || !fragmentShader) {
 			console.error('Failed to create shaders');
@@ -298,11 +304,11 @@
 		fitCanvas(gl, canvas);
 	});
 
-	$effect(() => {
-		if (!gl || !fs) return;
+	run.subscribe((value) => {
+		if (!gl || !$fs) return;
 		// Recompile and relink program with updated fragment shader
 		const newVertex = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-		const newFragment = createShader(gl, gl.FRAGMENT_SHADER, fs);
+		const newFragment = createShader(gl, gl.FRAGMENT_SHADER, $fs);
 		if (!newVertex || !newFragment) {
 			console.error('Failed to compile shaders on update');
 			return;
@@ -329,11 +335,9 @@
 		if (audioTexUniform) gl.uniform1i(audioTexUniform, audioTexUnit);
 		if (audioBinsUniform) gl.uniform1f(audioBinsUniform, audioBins);
 
-		// Attribute location is forced to 0 via bindAttribLocation; ensure it is enabled
 		const loc = gl.getAttribLocation(program, 'a_position');
 		if (loc !== -1) {
 			gl.enableVertexAttribArray(loc);
-			// Re-point attribute to current bound buffer
 			gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 		}
 	});
@@ -355,9 +359,35 @@
 		nextPage('next');
 	};
 
-	isFullCanvas.subscribe((value) => {
-		if (gl && canvas) fitCanvas(gl, canvas);
+	// isFullCanvasの変更を監視して適切にリサイズ
+	let previousFullCanvas = $isFullCanvas;
+	$effect(() => {
+		if (previousFullCanvas !== $isFullCanvas) {
+			// 状態が変更されたときに少し遅延を入れて確実にリサイズ
+			setTimeout(() => {
+				if (gl && canvas) {
+					fitCanvas(gl, canvas);
+				}
+			}, 50); // CSS transitionなどが完了するまで少し待機
+
+			// さらに確実にするため、少し長めの遅延でもう一度実行
+			setTimeout(() => {
+				if (gl && canvas) {
+					fitCanvas(gl, canvas);
+				}
+			}, 200);
+
+			previousFullCanvas = $isFullCanvas;
+		}
 	});
+
+	// isFullCanvas.subscribe((value) => {
+	// 	if (value) {
+	// 		if (gl && canvas) fitCanvas(gl, canvas);
+	// 	} else {
+	// 		if (gl && canvas) fitCanvas(gl, canvas);
+	// 	}
+	// });
 </script>
 
 <canvas
@@ -396,7 +426,7 @@
 		mouseY = (yPxBottom * 2.0 - gl.drawingBufferHeight) / minSide;
 	}}
 	onclick={handleClick}
-	class={twMerge('z-0 h-full', className)}
+	class="z-0 h-full {$isFullCanvas ? 'w-full' : 'w-1/2'}"
 >
 </canvas>
 <ErrorMessage />

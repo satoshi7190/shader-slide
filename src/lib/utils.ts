@@ -41,10 +41,10 @@ export const nextPage = (type: 'next' | 'prev') => {
 	}
 };
 
-export const toggleFullScreen = (value: boolean) => {
-	if (value) {
-		document.documentElement.requestFullscreen();
-	} else {
-		document.exitFullscreen();
-	}
-};
+// export const toggleFullScreen = (value: boolean) => {
+// 	if (value) {
+// 		document.documentElement.requestFullscreen();
+// 	} else {
+// 		document.exitFullscreen();
+// 	}
+// };

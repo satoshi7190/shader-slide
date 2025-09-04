@@ -1,13 +1,7 @@
 <script lang="ts">
 	import ace from 'ace-builds/src-noconflict/ace';
 	import { debounce } from 'es-toolkit';
-	import { isFullCanvas } from '$lib/store';
-
-	interface Props {
-		fs: string;
-	}
-
-	let { fs = $bindable() }: Props = $props();
+	import { isFullCanvas, fs, run } from '$lib/store';
 
 	// --- 必要なモジュールのインポート ---
 	// 1. GLSL用の言語モードをインポート
@@ -28,10 +22,6 @@
 	// 'editor'というIDを持つDOM要素をエディタとして初期化
 
 	let editElement = $state<HTMLElement | null>(null);
-
-	const updateFragmentShader = (code: string) => {
-		fs = code;
-	};
 
 	onMount(() => {
 		const editor = ace.edit(editElement);
@@ -54,53 +44,17 @@
 		// テキストの折り返し設定
 		editor.session.setUseWrapMode(true);
 
-		// アニメーション関数を追加
-		const animateText = (editor: any, text: string, duration: number = 2000) => {
-			editor.setValue('', -1);
-			const startTime = performance.now();
-
-			const animate = (currentTime: number) => {
-				const elapsed = currentTime - startTime;
-				const progress = Math.min(elapsed / duration, 1);
-
-				// 現在表示すべき文字数を計算
-				const currentLength = Math.floor(progress * text.length);
-				const currentText = text.substring(0, currentLength);
-
-				// 一度にまとめて設定（効率的）
-				editor.setValue(currentText, -1);
-
-				if (progress < 1) {
-					requestAnimationFrame(animate);
-				} else {
-					updateFragmentShader(text);
-				}
-			};
-
-			requestAnimationFrame(animate);
-		};
-
-		// 初期コードをアニメーション付きで設定
-		animateText(editor, fs);
-
 		// --- 初期コードの設定 ---
 		// GLSLのサンプルコードをエディタに設定
-		// editor.setValue(fs, -1); // -1はカーソル位置を変更しない
+		editor.setValue($fs, -1); // -1はカーソル位置を変更しない
 
 		// --- イベントリスナー ---
-
-		const debounceShaderUpdate = debounce(() => {
-			// エディタの内容を取得
-			const shaderCode = editor.getValue();
-			// コンソールに出力
-			// シェーダーコードを更新
-			updateFragmentShader(shaderCode);
-		}, 500); // 500ミリ秒のデバウンス時間
 
 		// エディタの内容が変更されたときにコンソールに出力
 		editor.session.on('change', () => {
 			// 現在のコードを取得
-			debounceShaderUpdate();
+			const shaderCode = editor.getValue();
+			// $fs = shaderCode;
 		});
 
 		// エディッタの表示・非表示を切り替える関数
@@ -117,10 +71,27 @@
 		isFullCanvas.subscribe((value) => {
 			toggleEditorVisibility(value);
 		});
+
+		fs.subscribe((value) => {
+			if (editor) {
+				editor.setValue(value);
+			}
+		});
 	});
 </script>
 
-<div class="h-full w-1/2" bind:this={editElement}></div>
+<div class="flex h-full flex-col {$isFullCanvas ? 'w-0' : 'w-1/2'}">
+	<div class="flex w-full flex-1 justify-end bg-[#272822] px-2">
+		<button
+			class="grid cursor-pointer place-items-center rounded bg-gray-300 p-1"
+			onclick={() => {
+				// Run the shader code
+				run.set(++$run);
+			}}><span>run</span></button
+		>
+	</div>
+	<div class="h-full w-full" bind:this={editElement}></div>
+</div>
 
 <style>
 	/* エディタのスタイル */

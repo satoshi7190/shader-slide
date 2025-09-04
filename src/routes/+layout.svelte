@@ -1,7 +1,8 @@
 <script lang="ts">
 	import '../app.css';
 	import { nextPage } from '$lib/utils';
-	import { isFullScreen } from '$lib/store';
+	import { isFullScreen, run } from '$lib/store';
+	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
 
 	import Control from '$lib/components/Control.svelte';
 	import { onMount } from 'svelte';
@@ -42,13 +43,19 @@
 		} else if (event.key === 'F1') {
 			// フルスクリーンの切り替え
 			$isFullScreen = !$isFullScreen;
+		} else if (event.key === 'F5') {
+			// フルスクリーンの切り替え
+			$run = ++$run;
 		}
 	};
 </script>
 
 <div class="grid h-dvh w-screen place-items-center bg-black">
 	<div class="absolute aspect-video w-full bg-white text-[2vw]">
-		{@render children?.()}
+		<div class="absolute flex h-full w-full">
+			{@render children()}
+			<WebGLScreen />
+		</div>
 	</div>
 </div>
 
