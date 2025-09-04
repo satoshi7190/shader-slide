@@ -54,9 +54,38 @@
 		// テキストの折り返し設定
 		editor.session.setUseWrapMode(true);
 
+		// アニメーション関数を追加
+		const animateText = (editor: any, text: string, duration: number = 2000) => {
+			editor.setValue('', -1);
+			const startTime = performance.now();
+
+			const animate = (currentTime: number) => {
+				const elapsed = currentTime - startTime;
+				const progress = Math.min(elapsed / duration, 1);
+
+				// 現在表示すべき文字数を計算
+				const currentLength = Math.floor(progress * text.length);
+				const currentText = text.substring(0, currentLength);
+
+				// 一度にまとめて設定（効率的）
+				editor.setValue(currentText, -1);
+
+				if (progress < 1) {
+					requestAnimationFrame(animate);
+				} else {
+					updateFragmentShader(text);
+				}
+			};
+
+			requestAnimationFrame(animate);
+		};
+
+		// 初期コードをアニメーション付きで設定
+		animateText(editor, fs);
+
 		// --- 初期コードの設定 ---
 		// GLSLのサンプルコードをエディタに設定
-		editor.setValue(fs, -1); // -1はカーソル位置を変更しない
+		// editor.setValue(fs, -1); // -1はカーソル位置を変更しない
 
 		// --- イベントリスナー ---
 
