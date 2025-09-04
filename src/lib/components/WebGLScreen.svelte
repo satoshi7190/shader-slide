@@ -69,7 +69,6 @@
 		if (!success) {
 			isErrorMessage.set(gl.getShaderInfoLog(shader));
 			console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
-			// console.error('Source code:', finalSource); // デバッグ用に最終ソースも出力
 			gl.deleteShader(shader);
 			return null;
 		}

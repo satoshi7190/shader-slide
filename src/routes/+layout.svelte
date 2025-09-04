@@ -3,6 +3,7 @@
 	import { nextPage } from '$lib/utils';
 	import { isFullScreen, run } from '$lib/store';
 	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
+	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 
 	import Control from '$lib/components/Control.svelte';
 	import { onMount } from 'svelte';
@@ -55,6 +56,7 @@
 		<div class="absolute flex h-full w-full">
 			{@render children()}
 			<WebGLScreen />
+			<ErrorMessage />
 		</div>
 	</div>
 </div>
