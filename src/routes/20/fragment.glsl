@@ -55,7 +55,7 @@ void main() {
     
     // 魔法陣リング
     for (int i = 0; i < 3; i++) {
-        float fi = float(i);
+        float fi = float(i) ;
         vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * st;
         float radius = 0.2 + fi * 0.15;
         float circle = sdCircle(rotSt, radius);
@@ -64,10 +64,10 @@ void main() {
         vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));
         
         float d = abs(circle);
-       
-        color += glow(d, 0.8, 100.0) * ringColor * 0.4;
-        color += glow(d, 0.4, 20.0) * ringColor * 0.6;
-        color += glow(d, 0.2, 5.0) * ringColor * 0.8;
+
+        color += glow(d - bass, 0.8, 100.0) * ringColor * 0.4;
+        color += glow(d - mid, 0.4, 20.0) * ringColor * 0.6;
+        color += glow(d - treble, 0.2, 5.0) * ringColor * 0.8;
     }
     
     // 波紋
