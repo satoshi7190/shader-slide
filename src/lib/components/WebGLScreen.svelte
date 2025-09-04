@@ -1,15 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import vertexShaderSource from './shaders/vertex.glsl?raw';
-	import { twMerge } from 'tailwind-merge';
 	import { nextPage } from '$lib/utils';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import { isErrorMessage, isFullCanvas, fs, run } from '$lib/store';
-	import { debounce } from 'es-toolkit';
-
-	interface Props {
-		className?: string;
-	}
 
 	let canvas: HTMLCanvasElement | null = null;
 	let gl: WebGLRenderingContext | null = null;
@@ -378,14 +372,6 @@
 			previousFullCanvas = $isFullCanvas;
 		}
 	});
-
-	// isFullCanvas.subscribe((value) => {
-	// 	if (value) {
-	// 		if (gl && canvas) fitCanvas(gl, canvas);
-	// 	} else {
-	// 		if (gl && canvas) fitCanvas(gl, canvas);
-	// 	}
-	// });
 </script>
 
 <canvas

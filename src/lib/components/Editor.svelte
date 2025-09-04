@@ -2,6 +2,8 @@
 	import ace from 'ace-builds/src-noconflict/ace';
 	import { isFullCanvas, fs, run } from '$lib/store';
 	import { nextPage } from '$lib/utils';
+	import { debounce } from 'es-toolkit';
+	import { page } from '$app/state';
 
 	// --- 必要なモジュールのインポート ---
 	import 'ace-builds/src-noconflict/mode-glsl';
@@ -31,6 +33,12 @@
 	let editElement = $state<HTMLElement | null>(null);
 	let editor: any = null;
 	let activeMarkers: number[] = []; // アクティブなマーカーのID管理
+
+	$effect(() => {
+		if (page) {
+			isRun = false;
+		}
+	});
 
 	// ハイライトを適用する関数
 	const applyHighlights = (highlights: HighlightLine[]) => {
@@ -91,12 +99,6 @@
 		}
 	});
 
-	const jumpToLine = (lineNumber: number) => {
-		if (editor) {
-			editor.gotoLine(lineNumber + 1, 0, true); // 1ベースでジャンプ
-		}
-	};
-
 	onMount(() => {
 		editor = ace.edit(editElement);
 		isRun = false;
@@ -124,12 +126,19 @@
 			applyHighlights(highlightLines);
 		}
 
+		// const updateCode = debounce(() => {
+		// 	console.log('updateCode called');
+		// 	if (!isRun) return;
+		// 	run.set(++$run);
+
+		// 	// 必要に応じてfsストアを更新
+		// 	// fs.set(shaderCode);
+		// }, 300);
+
 		// エディタの内容が変更されたときの処理
-		editor.session.on('change', () => {
-			const shaderCode = editor.getValue();
-			// 必要に応じてfsストアを更新
-			// fs.set(shaderCode);
-		});
+		// editor.session.on('change', () => {
+		// 	updateCode();
+		// });
 
 		// エディッタの表示・非表示を切り替える関数
 		const toggleEditorVisibility = (value: boolean) => {
@@ -174,23 +183,16 @@
 	<div class="flex w-full flex-1 justify-between bg-[#272822] px-2">
 		<div class="text-[200%] text-white">{title}</div>
 
-		{#if isRun}
-			<button
-				class="grid cursor-pointer place-items-center rounded bg-gray-300 p-1"
-				onclick={() => {
-					// Run the shader code
-					nextPage('next');
-				}}><span>run</span></button
-			>
-		{:else}
-			<button
-				class="grid cursor-pointer place-items-center rounded bg-gray-300 p-1"
-				onclick={() => {
-					// Run the shader code
-					run.set(++$run);
-					isRun = true;
-				}}><span>→</span></button
-			>{/if}
+		<button
+			class="grid cursor-pointer place-items-center rounded p-1 {isRun
+				? 'bg-gray-300'
+				: 'bg-[aquamarine]'}"
+			onclick={() => {
+				// Run the shader code
+				run.set(++$run);
+				isRun = true;
+			}}><span>run</span></button
+		>
 	</div>
 	<div class="h-full w-full" bind:this={editElement}></div>
 </div>
