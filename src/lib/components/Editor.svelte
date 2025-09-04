@@ -186,16 +186,28 @@
 	<div class="flex w-full flex-1 justify-between bg-[#272822] px-2">
 		<div class="text-[200%] text-white">{title}</div>
 
-		<button
-			class="grid cursor-pointer place-items-center rounded p-1 {isRun
-				? 'bg-gray-300'
-				: 'bg-[aquamarine]'}"
-			onclick={() => {
-				// Run the shader code
-				run.set(++$run);
-				isRun = true;
-			}}><span>run</span></button
-		>
+		{#if !isRun}
+			<button
+				class="grid cursor-pointer place-items-center rounded p-1 {isRun
+					? 'bg-gray-300'
+					: 'bg-[aquamarine]'}"
+				onclick={() => {
+					// Run the shader code
+					run.set(++$run);
+					isRun = true;
+				}}><span>run</span></button
+			>
+		{:else}
+			<button
+				class="grid cursor-pointer place-items-center rounded p-1 {isRun
+					? 'bg-gray-300'
+					: 'bg-[aquamarine]'}"
+				onclick={() => {
+					// Stop the shader code
+					nextPage('next');
+				}}><span>next→</span></button
+			>
+		{/if}
 	</div>
 	<div class="h-full w-full" bind:this={editElement}></div>
 </div>
