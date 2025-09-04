@@ -8,12 +8,11 @@ float sdCircle(vec2 p, float r) {
 }
                     
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5);
     st.x *= resolution.x / resolution.y;
-    
+
     float circle = sdCircle(st, 0.3);
-    
-    // 円の内側は黒、外側は白で可視化
+
     vec3 color = vec3(step(0.0, circle));
     
     fragColor = vec4(color, 1.0);

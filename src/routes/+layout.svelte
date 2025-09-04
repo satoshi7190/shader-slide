@@ -44,8 +44,8 @@
 		} else if (event.key === 'F1') {
 			// フルスクリーンの切り替え
 			$isFullScreen = !$isFullScreen;
-		} else if (event.key === 'F5') {
-			// フルスクリーンの切り替え
+		} else if (event.key === 'Enter') {
+			// 再生/一時停止
 			$run = ++$run;
 		}
 	};

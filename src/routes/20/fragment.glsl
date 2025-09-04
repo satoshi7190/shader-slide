@@ -41,7 +41,7 @@ float ripple(vec2 center, vec2 uv, float time, float freq, float amp) {
 out vec4 fragColor;
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5);
     st.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
@@ -53,7 +53,6 @@ void main() {
     float treble = texture(u_audioTex, vec2(0.9, 0.5)).r;
     float mid = texture(u_audioTex, vec2(0.5, 0.5)).r;
     
-    // 魔法陣リング
     for (int i = 0; i < 3; i++) {
         float fi = float(i) ;
         vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * st;

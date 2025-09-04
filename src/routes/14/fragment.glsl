@@ -39,7 +39,7 @@ mat2 rotate2d(float angle) {
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5);
     st.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
@@ -47,7 +47,7 @@ void main() {
     for (int i = 0; i < 3; i++) {
         float fi = float(i);
         vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * st;
-        float radius = 0.2 + fi * 0.15;
+        float radius = 0.1 + fi * 0.1;
         float circle = sdCircle(rotSt, radius);
         
         float hue = fi * 0.3 + time * 0.1;
