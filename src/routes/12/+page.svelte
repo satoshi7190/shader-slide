@@ -13,15 +13,21 @@
 
 <Overlay>
 	<span class="title">自己紹介</span>
-	<div class="block-left flex flex-col items-center justify-center pt-[5%]">
+	<div
+		class="absolute top-[15%] left-[3%] flex w-1/2 flex-col items-center justify-center pt-[5%] text-[100%]"
+	>
 		<img class="aspect-square w-[60%] rounded-full c-no-drag-icon" src="./icon.png" alt="Icon" />
 	</div>
-	<div class="block-right">
+	<div class="absolute top-[15%] right-[8%] flex flex-col gap-4 text-[150%]">
+		<span class="text-[160%]">Satoshi Komatsu</span>
+
+		<span> </span>
 		<span>株式会社MIERUNE</span>
 		<span>フロントエンドエンジニア</span>
 		<span> </span>
+		<span> </span>
+
+		<span>中身のコードに興味はない。</span>
+		<span>ビジュアルにこだわりたい。</span>
 	</div>
-	<span class="absolute bottom-[10%] text-white"
-		>中身のコードに興味はなく、ビジュアルにこだわりたい。</span
-	>
 </Overlay>

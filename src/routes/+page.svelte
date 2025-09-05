@@ -17,10 +17,10 @@
 	<div class="c-text-shadow absolute top-[20%] flex w-full justify-center text-[200%] text-white">
 		<span>WebGL シェーダーが生み出す魔法体験</span>
 	</div>
-	<span class="absolute bottom-[16%] left-1/2 -translate-x-1/2 text-[100%] text-white"
+	<span class="absolute bottom-[24%] left-1/2 -translate-x-1/2 text-[100%] text-white"
 		>株式会社MIERUNE
 	</span>
-	<span class="absolute bottom-[24%] left-1/2 -translate-x-1/2 text-[100%] text-white"
+	<span class="absolute bottom-[13%] left-1/2 -translate-x-1/2 text-[150%] text-white"
 		>Satoshi Komatsu
 	</span>
 </Overlay>
