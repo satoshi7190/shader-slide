@@ -17,7 +17,8 @@
 			message: '有機的な動きを表現する関数'
 		},
 		...highlightRange(42, 55),
-		...highlightRange(67, 69)
+		...highlightRange(68, 69),
+		...highlightRange(81, 85)
 	]);
 </script>
 

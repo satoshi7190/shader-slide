@@ -87,8 +87,8 @@ void main() {
     }
 
     float distortedWaves = ripple(vec2(0.0), uv, time * 3.0, 20.0, 0.3);
-    vec2 waveDistortSt = uv + vec2(noise(uv * 5.0 + time) - 0.5, noise(uv * 5.0 + time + 100.0) - 0.5) * 0.1;
-    distortedWaves += ripple(vec2(0.0), waveDistortSt, time * 2.0, 15.0, 0.2);
+    vec2 waveDistortUv = uv + vec2(noise(uv * 5.0 + time) - 0.5, noise(uv * 5.0 + time + 100.0) - 0.5) * 0.1;
+    distortedWaves += ripple(vec2(0.0), waveDistortUv, time * 2.0, 15.0, 0.2);
     
     color += abs(distortedWaves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
     
