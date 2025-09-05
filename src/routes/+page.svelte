@@ -12,10 +12,10 @@
 
 <Overlay>
 	<span class="c-text-shadow absolute top-[16%] left-1/2 -translate-x-1/2 text-[200%] text-white"
-		>GLSL で解き放つ！</span
+		><span class="text-[150%]">GLSL</span> で解き放つ！</span
 	>
-	<div class="c-text-shadow absolute top-[30%] flex w-full justify-center text-[200%] text-white">
-		<span>WebGL シェーダーが生み出す魔法体験</span>
+	<div class="c-text-shadow absolute top-[40%] flex w-full justify-center text-[200%] text-white">
+		<span>WebGL シェーダーが生み出す<span class="text-[150%]">魔法</span>体験</span>
 	</div>
 
 	<span class="absolute bottom-[13%] left-1/2 -translate-x-1/2 text-[150%] text-white"
