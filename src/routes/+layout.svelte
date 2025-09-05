@@ -6,6 +6,7 @@
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 
 	import Control from '$lib/components/Control.svelte';
+	import Timer from '$lib/components/Timer.svelte';
 	import { onMount } from 'svelte';
 
 	let { children } = $props();
@@ -62,5 +63,8 @@
 </div>
 
 <Control show={isNarrowerThan16by9} />
+
+<!-- 5分タイマーを左下に表示 -->
+<Timer duration={300} position="bottom-left" size="small" />
 
 <svelte:window onkeydown={handleKeydown} onresize={updateScreenSize} />

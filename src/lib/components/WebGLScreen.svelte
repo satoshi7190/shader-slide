@@ -370,6 +370,9 @@
 
 <canvas
 	bind:this={canvas}
+	onclick={() => {
+		nextPage('next');
+	}}
 	onmousemove={(e) => {
 		if (!gl || !canvas) return;
 		const rect = canvas.getBoundingClientRect();

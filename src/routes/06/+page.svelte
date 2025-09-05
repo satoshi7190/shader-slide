@@ -8,13 +8,14 @@
 	onMount(() => {
 		fs.set(fragment);
 		isFullCanvas.set(false);
+		if (import.meta.env.PROD) run.set(++$run);
 	});
 </script>
 
 <Editor title="UV座標の可視化" />
 
 <!-- <div class="absolute bottom-0 left-0 z-10 h-full w-1/2 bg-black/50"></div> -->
-<div class="absolute right-0 bottom-0 z-10 h-full w-1/2 text-[200%]">
+<div class="pointer-events-none absolute right-0 bottom-0 z-10 h-full w-1/2 text-[200%]">
 	<span class="absolute top-0 bg-black/70 p-[1%]">0,1</span>
 	<span class="absolute bottom-0 bg-black/70 p-[1%]">0,0</span>
 	<span class="absolute right-0 bottom-0 bg-black/70 p-[1%]">1,0</span>
