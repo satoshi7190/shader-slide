@@ -11,7 +11,14 @@
 		if (import.meta.env.PROD) run.set(++$run);
 	});
 
-	const highlightLines = $state([...highlightRange(41, 55), ...highlightRange(67, 69)]);
+	const highlightLines = $state([
+		{
+			line: 41,
+			message: '有機的な動きを表現する関数'
+		},
+		...highlightRange(42, 55),
+		...highlightRange(67, 69)
+	]);
 </script>
 
 <Editor title="有機的な動き" {highlightLines} />

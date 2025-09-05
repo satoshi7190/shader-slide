@@ -17,7 +17,7 @@
 			message: '２次元回転関数'
 		},
 		...highlightRange(38, 39),
-		...highlightRange(61, 62)
+		...highlightRange(66, 74)
 	]);
 </script>
 
