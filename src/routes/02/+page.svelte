@@ -1,5 +1,4 @@
 <script lang="ts">
-	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import Overlay from '$lib/components/Overlay.svelte';
@@ -14,14 +13,15 @@
 
 <Overlay>
 	<span class="title">シェーダーとは</span>
-	<div class="absolute top-[15%] flex flex-col px-[3%] text-[150%] text-white">
-		<span
-			>GLSL（OpenGL Shading
-			Language）とは、OpenGLで使用されるシェーディング言語です。主に3Dグラフィックスの描画において、頂点シェーダーやフラグメントシェーダーを記述するために使用されます。</span
-		>
+	<div class="absolute top-[15%] flex flex-col gap-2 px-[3%] text-[150%] text-white">
+		<span>GPU上で実行される小さなプログラム</span>
 		<br />
-		<span>・GPUで実行される専用言語 </span>
-		<span>・頂点・フラグメント処理を記述 </span>
-		<span>・リアルタイム3D描画に必須</span>
+		<span>主に2種類ある</span>
+		<span>頂点シェーダー - 3Dオブジェクトの形や位置を決定</span>
+		<span>フラグメントシェーダー - 各ピクセルの色を計算</span>
+		<br />
+		<span
+			>今日注目するのはフラグメントシェーダー。画面上の何百万ものピクセル一つ一つに対して、同時並列で「君は何色になるべきか」を計算します。</span
+		>
 	</div>
 </Overlay>

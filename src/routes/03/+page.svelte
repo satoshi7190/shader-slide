@@ -1,5 +1,4 @@
 <script lang="ts">
-	import WebGLScreen from '$lib/components/WebGLScreen.svelte';
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import Overlay from '$lib/components/Overlay.svelte';
@@ -13,15 +12,16 @@
 </script>
 
 <Overlay>
-	<span class="title">GLSL（OpenGL Shading Language）とは</span>
+	<span class="title">GLSLとは</span>
 	<div class="absolute top-[15%] flex flex-col px-[3%] text-[150%] text-white">
-		<span
-			>GLSL（OpenGL Shading
-			Language）とは、OpenGLで使用されるシェーディング言語です。主に3Dグラフィックスの描画において、頂点シェーダーやフラグメントシェーダーを記述するために使用されます。</span
-		>
+		<span>Graphics Library Shader Languageの略</span>
 		<br />
-		<span>・GPUで実行される専用言語 </span>
-		<span>・頂点・フラグメント処理を記述 </span>
-		<span>・リアルタイム3D描画に必須</span>
+		<span>シェーダーを記述するための専用プログラミング言語</span>
+		<br />
+		<span>C言語をベースとした文法</span>
+		<br />
+		<span
+			>数学的思考が必要不可欠で、並列処理特有の制約があるため、人間には理解が困難な呪文とか言われてる</span
+		>
 	</div>
 </Overlay>

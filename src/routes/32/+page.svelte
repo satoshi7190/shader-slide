@@ -11,6 +11,7 @@
 		fs.set(fragment);
 		isFullCanvas.set(true);
 	});
+	let videoElement: HTMLVideoElement;
 </script>
 
 <Overlay>
@@ -23,11 +24,18 @@
 			>
 		</div>
 		<br />
-		<img
-			src="./image1.webp"
-			alt=""
-			class="absolute top-[9%] right-[1%] block aspect-video w-[60%]"
-		/>
+
+		<video
+			bind:this={videoElement}
+			src="./video1.mp4"
+			class="absolute top-[9%] right-[1%] block w-[60%] rounded-lg"
+			autoplay={true}
+			muted={true}
+			loop={true}
+		>
+			<track kind="captions" />
+			動画がサポートされていません。
+		</video>
 
 		<span class="absolute right-[1%] bottom-[1%] text-[50%]"
 			>出典:Revision 2025 - Event - Shader Showdown

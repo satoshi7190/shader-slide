@@ -15,9 +15,12 @@
 
 <Overlay>
 	<span class="title">📚 GLSLを学ぶ</span>
-	<div class="absolute top-[15%] flex flex-col px-[3%] text-[130%] text-white">
-		<span>シェーダートイ</span>
+	<div class="absolute top-[20%] flex h-[80%] w-full flex-col px-[3%] text-[130%] text-white">
+		<span class="text-[150%]">The Book of Shaders</span>
 		<br />
-		<span>シェーダートイ</span>
+		<img src="./image3.webp" alt="" class="absolute top-[9%] right-[1%] block w-[50%]" />
+		<span class="absolute right-[1%] bottom-[1%] text-[50%]"
+			>出典:The Book of Shaders（https://thebookofshaders.com/）</span
+		>
 	</div>
 </Overlay>

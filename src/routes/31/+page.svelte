@@ -15,11 +15,12 @@
 
 <Overlay>
 	<span class="title">🎨 GLSLをシェアする</span>
-	<div class="absolute top-[20%] flex flex-col px-[3%] text-[130%] text-white">
-		<span>チュートリアルサイト </span>
+	<div class="absolute top-[20%] flex h-[80%] w-full flex-col px-[3%] text-[130%] text-white">
+		<span class="text-[150%]">ShaderToy</span>
 		<br />
-		<span>チュートリアル動画 </span>
-		<br />
-		<span>チュートリアル動画</span>
+		<img src="./image2.webp" alt="" class="absolute top-[9%] right-[1%] block w-[57%]" />
+		<span class="absolute right-[1%] bottom-[1%] text-[50%]"
+			>出典:ShaderToy BETA（https://www.shadertoy.com/）</span
+		>
 	</div>
 </Overlay>

@@ -18,7 +18,7 @@
 		highlightLines?: HighlightLine[]; // ハイライトする行の配列
 	}
 
-	let { highlightLines = [], title = 'Shader Editor' }: Props = $props();
+	let { highlightLines = [], title = 'GLSL Editor' }: Props = $props();
 	let isRun = $state(false);
 
 	const workerUrl = new URL('ace-builds/src-noconflict/worker-glsl.js', import.meta.url).href;
