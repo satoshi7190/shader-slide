@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state(highlightRange(7, 7));
+	const highlightLines = $state(highlightRange(6, 6));
 </script>
 
 <Editor {highlightLines} title={'中心基準に正規化'} />
