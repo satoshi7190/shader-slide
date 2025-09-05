@@ -17,6 +17,11 @@ float glow(float d, float strength, float falloff) {
     return strength / (1.0 + d * d * falloff);
 }          
 
+float ripple(vec2 center, vec2 uv, float time, float freq, float amp) {
+    float dist = distance(uv, center);
+    return sin(dist * freq - time) * amp * (1.0 / (1.0 + dist * 2.0));
+}
+
 void main() {
     vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
     uv.x *= resolution.x / resolution.y;
@@ -36,6 +41,9 @@ void main() {
         color += glow(d, 0.4, 20.0) * ringColor * 0.6;
         color += glow(d, 0.2, 5.0) * ringColor * 0.8;
     }
+    
+    float waves = ripple(vec2(0.0), uv, time * 3.0, 20.0, 0.3);
+    color += abs(waves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
 
     fragColor = vec4(color, 1.0);
 }

@@ -13,12 +13,17 @@
 
 	const highlightLines = $state([
 		{
-			line: 20,
-			message: '波紋効果関数'
+			line: 25,
+			message: '乱数関数'
 		},
-		...highlightRange(21, 22),
-		...highlightRange(45, 46)
+		...highlightRange(26, 27),
+		{
+			line: 29,
+			message: 'ノイズ関数'
+		},
+		...highlightRange(30, 35),
+		...highlightRange(61, 62)
 	]);
 </script>
 
-<Editor {highlightLines} title={'波紋を描く'} />
+<Editor {highlightLines} title={'パーティクルを描く'} />

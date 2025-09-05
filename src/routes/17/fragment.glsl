@@ -38,6 +38,22 @@ mat2 rotate2d(float angle) {
     return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 }
 
+float distortedCircle(vec2 p, float r, float time, float intensity) {
+    float angle = atan(p.y, p.x);
+    float radius = length(p);
+    
+    float distortion = 0.0;
+    
+    distortion += sin(angle * 3.0 + time * 0.5) * 0.03;
+    distortion += sin(angle * 8.0 + time * 1.2) * 0.02;
+    distortion += sin(angle * 15.0 + time * 2.0) * 0.01;
+    
+    vec2 noisePos = vec2(cos(angle), sin(angle)) * 3.0;
+    distortion += (noise(noisePos + time * 0.3) - 0.5) * 0.04;
+    
+    return radius - (r + distortion * intensity);
+}
+
 void main() {
     vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
     uv.x *= resolution.x / resolution.y;
@@ -48,34 +64,39 @@ void main() {
         float fi = float(i);
         vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * uv;
         float radius = 0.2 + fi * 0.15;
-        float circle = sdCircle(rotSt, radius);
+        
+        float intensity = 1.0 + fi * 0.5;
+        float circle = distortedCircle(rotSt, radius, time + fi * 2.0, intensity);
         
         float hue = fi * 0.3 + time * 0.1;
         vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));
         
         float d = abs(circle);
-       
+
         color += glow(d, 0.8, 100.0) * ringColor * 0.4;
         color += glow(d, 0.4, 20.0) * ringColor * 0.6;
         color += glow(d, 0.2, 5.0) * ringColor * 0.8;
     }
 
-    float waves = ripple(vec2(0.0), uv, time * 3.0, 20.0, 0.3);
-    color += abs(waves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
-
+    float distortedWaves = ripple(vec2(0.0), uv, time * 3.0, 20.0, 0.3);
+    vec2 waveDistortSt = uv + vec2(noise(uv * 5.0 + time) - 0.5, noise(uv * 5.0 + time + 100.0) - 0.5) * 0.1;
+    distortedWaves += ripple(vec2(0.0), waveDistortSt, time * 2.0, 15.0, 0.2);
+    
+    color += abs(distortedWaves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
+    
     vec2 rotatedUv1 = rotate2d(time * 0.3) * uv;
     float particles1 = noise(rotatedUv1 * 8.0 + time * 0.5) * 0.5 + 0.5;
     particles1 += noise(rotatedUv1 * 16.0 - time * 0.3) * 0.3;
-
+    
     vec2 rotatedUv2 = rotate2d(time * -0.5) * uv;
     float particles2 = noise(rotatedUv2 * 6.0 + time * 0.4) * 0.4;
-
-    vec2 rotatedUv3 = rotate2d(time * 0.8) * uv; 
+    
+    vec2 rotatedUv3 = rotate2d(time * 0.8) * uv;
     float particles3 = noise(rotatedUv3 * 12.0 - time * 0.6) * 0.3;
-
-    color += particles1 * hsv2rgb(vec3(time * 0.1, 0.6, 1.0)) * 0.3; 
-    color += particles2 * hsv2rgb(vec3(time * 0.15 + 0.3, 0.7, 0.8)) * 0.2; 
-    color += particles3 * hsv2rgb(vec3(time * 0.2 + 0.6, 0.8, 0.9)) * 0.2; 
+    
+    color += particles1 * hsv2rgb(vec3(time * 0.1, 0.6, 1.0)) * 0.3;
+    color += particles2 * hsv2rgb(vec3(time * 0.15 + 0.3, 0.7, 0.8)) * 0.2;
+    color += particles3 * hsv2rgb(vec3(time * 0.2 + 0.6, 0.8, 0.9)) * 0.2;
 
     fragColor = vec4(color, 1.0);
 }

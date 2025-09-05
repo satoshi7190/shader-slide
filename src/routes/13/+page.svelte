@@ -17,7 +17,7 @@
 			message: 'グロー効果関数'
 		},
 		...highlightRange(17, 18),
-		...highlightRange(26, 36)
+		...highlightRange(35, 37)
 	]);
 </script>
 

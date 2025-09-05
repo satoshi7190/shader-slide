@@ -13,17 +13,12 @@
 
 	const highlightLines = $state([
 		{
-			line: 25,
-			message: '乱数関数'
+			line: 37,
+			message: '２次元回転関数'
 		},
-		...highlightRange(26, 27),
-		{
-			line: 29,
-			message: 'ノイズ関数'
-		},
-		...highlightRange(30, 35),
+		...highlightRange(38, 39),
 		...highlightRange(61, 62)
 	]);
 </script>
 
-<Editor {highlightLines} title={'パーティクルを描く'} />
+<Editor {highlightLines} title={'回転させる'} />

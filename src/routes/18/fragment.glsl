@@ -1,5 +1,7 @@
 uniform vec2 resolution;
 uniform float time;
+uniform sampler2D audioTex;
+uniform float audioBins;
 
 out vec4 fragColor;
 
@@ -60,6 +62,12 @@ void main() {
     
     vec3 color = vec3(0.0);
 
+    float u_intensity = 0.1;
+    
+    float bass = texture(audioTex, vec2(0.1, 0.5)).r;
+    float treble = texture(audioTex, vec2(0.9, 0.5)).r;
+    float mid = texture(audioTex, vec2(0.5, 0.5)).r;
+
     for (int i = 0; i < 3; i++) {
         float fi = float(i);
         vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * uv;
@@ -73,9 +81,9 @@ void main() {
         
         float d = abs(circle);
 
-        color += glow(d, 0.8, 100.0) * ringColor * 0.4;
-        color += glow(d, 0.4, 20.0) * ringColor * 0.6;
-        color += glow(d, 0.2, 5.0) * ringColor * 0.8;
+        color += glow(d - bass, 0.8, 100.0) * ringColor * 0.4;
+        color += glow(d - mid, 0.4, 20.0) * ringColor * 0.6;
+        color += glow(d - treble, 0.2, 5.0) * ringColor * 0.8;
     }
 
     float distortedWaves = ripple(vec2(0.0), uv, time * 3.0, 20.0, 0.3);
@@ -87,10 +95,10 @@ void main() {
     vec2 rotatedUv1 = rotate2d(time * 0.3) * uv;
     float particles1 = noise(rotatedUv1 * 8.0 + time * 0.5) * 0.5 + 0.5;
     particles1 += noise(rotatedUv1 * 16.0 - time * 0.3) * 0.3;
-    
+
     vec2 rotatedUv2 = rotate2d(time * -0.5) * uv;
     float particles2 = noise(rotatedUv2 * 6.0 + time * 0.4) * 0.4;
-    
+
     vec2 rotatedUv3 = rotate2d(time * 0.8) * uv;
     float particles3 = noise(rotatedUv3 * 12.0 - time * 0.6) * 0.3;
     

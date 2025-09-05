@@ -14,13 +14,13 @@
 </script>
 
 <Overlay>
-	<span class="title">📚 GLSLを学ぶ</span>
+	<span class="title">🎨 GLSLをシェアする</span>
 	<div class="absolute top-[20%] flex h-[80%] w-full flex-col px-[3%] text-[130%] text-white">
-		<span class="text-[150%]">The Book of Shaders</span>
+		<span class="text-[150%]">ShaderToy</span>
 		<br />
-		<img src="./image3.webp" alt="" class="absolute top-[9%] right-[1%] block w-[50%]" />
+		<img src="./image2.webp" alt="" class="absolute top-[9%] right-[1%] block w-[57%]" />
 		<span class="absolute right-[1%] bottom-[1%] text-[50%]"
-			>出典:The Book of Shaders（https://thebookofshaders.com/）</span
+			>出典:ShaderToy BETA（https://www.shadertoy.com/）</span
 		>
 	</div>
 </Overlay>

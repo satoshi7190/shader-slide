@@ -11,14 +11,7 @@
 		if (import.meta.env.PROD) run.set(++$run);
 	});
 
-	const highlightLines = $state([
-		{
-			line: 37,
-			message: '２次元回転関数'
-		},
-		...highlightRange(38, 39),
-		...highlightRange(61, 62)
-	]);
+	const highlightLines = $state([...highlightRange(41, 55), ...highlightRange(67, 69)]);
 </script>
 
-<Editor {highlightLines} title={'回転させる'} />
+<Editor title="有機的な動き" {highlightLines} />

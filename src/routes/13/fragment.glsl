@@ -15,7 +15,7 @@ vec3 hsv2rgb(vec3 c) {
 
 float glow(float d, float strength, float falloff) {
     return strength / (1.0 + d * d * falloff);
-}
+}          
 
 void main() {
     vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
@@ -32,12 +32,12 @@ void main() {
         vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));
         
         float d = abs(circle);
-        color += glow(d, 0.5, 30.0) * ringColor * 0.7;
+        color += glow(d, 0.8, 100.0) * ringColor * 0.4;
+        color += glow(d, 0.4, 20.0) * ringColor * 0.6;
+        color += glow(d, 0.2, 5.0) * ringColor * 0.8;
     }
-    
+
     fragColor = vec4(color, 1.0);
 }
-
-
 
 
