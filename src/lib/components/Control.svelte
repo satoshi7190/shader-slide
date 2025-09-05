@@ -11,26 +11,26 @@
 </script>
 
 <div
-	class="absolute bottom-0 z-10 flex w-full justify-end bg-black/50 p-1 px-4 text-sm shadow-lg {show &&
+	class="absolute bottom-0 z-10 flex w-full items-center justify-end bg-black/50 p-1 px-4 text-sm {show &&
 	!$isFullScreen
 		? ''
 		: 'opacity-0 transition-opacity duration-300 hover:opacity-70'}"
 >
-	<div class="flex gap-2">
+	<div class="flex items-center gap-2">
 		<button
-			class="grid aspect-square cursor-pointer place-items-center rounded-full bg-white/90"
+			class="grid shrink-0 cursor-pointer place-items-center rounded-full bg-white/90 p-1"
 			onclick={() => nextPage('prev')}
 		>
 			<Icon icon="iconamoon:arrow-left-2-duotone" class="h-6 w-6" />
 		</button>
 		<button
-			class="grid aspect-square cursor-pointer place-items-center rounded-full bg-white/90"
+			class="grid shrink-0 cursor-pointer place-items-center rounded-full bg-white/90 p-1"
 			onclick={() => nextPage('next')}
 		>
 			<Icon icon="iconamoon:arrow-right-2-duotone" class="h-6 w-6" />
 		</button>
 		<button
-			class="grid aspect-square cursor-pointer place-items-center rounded-full bg-white/90"
+			class="grid shrink-0 cursor-pointer place-items-center rounded-full bg-white/90 p-1"
 			onclick={() => ($isFullCanvas = !$isFullCanvas)}
 		>
 			<Icon
@@ -39,7 +39,7 @@
 			/>
 		</button>
 		<button
-			class="grid aspect-square cursor-pointer place-items-center rounded-full bg-white/90"
+			class="grid shrink-0 cursor-pointer place-items-center rounded-full bg-white/90 p-1"
 			onclick={() => ($isFullScreen = !$isFullScreen)}
 		>
 			<Icon
@@ -47,10 +47,8 @@
 				class="h-6 w-6"
 			/>
 		</button>
-	</div>
-	<div class="flex gap-2">
 		<a
-			class="cursor-pointer rounded-full bg-white/90 p-1 duration-150"
+			class="shrink-0 cursor-pointer rounded-full bg-white/90 p-1 duration-150"
 			href="https://github.com/satoshi7190/shader-slide"
 			target="_blank"
 			rel="noopener noreferrer"

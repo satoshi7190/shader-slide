@@ -65,6 +65,7 @@
 <Control show={isNarrowerThan16by9} />
 
 <!-- 5分タイマーを左下に表示 -->
-<Timer duration={300} position="bottom-left" size="small" />
-
+{#if import.meta.env.DEV}
+	<Timer duration={300} position="bottom-left" size="small" />
+{/if}
 <svelte:window onkeydown={handleKeydown} onresize={updateScreenSize} />

@@ -115,21 +115,21 @@
 		{#if !isRunning && !isPaused}
 			<button
 				onclick={startTimer}
-				class="rounded bg-white p-2 text-xs text-white"
+				class="shrink-0 rounded-full bg-gray-200 p-1.5 text-xs text-white"
 				aria-label="タイマー開始"
 			>
 			</button>
 		{:else if isRunning}
 			<button
 				onclick={pauseTimer}
-				class="rounded bg-gray-400 p-2 text-xs text-white"
+				class="shrink-0 rounded-full bg-gray-400 p-1.5 text-xs text-white"
 				aria-label="タイマー一時停止"
 			>
 			</button>
 		{:else if isPaused}
 			<button
 				onclick={startTimer}
-				class="rounded bg-white p-2 text-xs text-white"
+				class="shrink-0 rounded-full bg-gray-200 p-1.5 text-xs text-white"
 				aria-label="タイマー再開"
 			>
 			</button>
@@ -137,7 +137,7 @@
 
 		<button
 			onclick={resetTimer}
-			class="rounded bg-white p-1 p-2 text-xs text-white"
+			class="shrink-0 rounded-full bg-gray-200 p-1.5 text-xs text-white"
 			aria-label="タイマーリセット"
 		>
 		</button>

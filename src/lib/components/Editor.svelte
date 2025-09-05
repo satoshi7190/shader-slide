@@ -196,27 +196,29 @@
 <div class="flex h-full flex-col {$isFullCanvas ? 'w-0' : 'w-1/2'}">
 	<div class="flex w-full flex-1 items-center justify-between bg-[#272822] px-2">
 		<div class="text-[200%] text-white select-none">{title}</div>
-		{#if !isRun}
-			<button
-				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 text-black {isRun
-					? 'bg-gray-300'
-					: 'bg-[aquamarine]'}"
-				onclick={() => {
-					// Run the shader code
-					run.set(++$run);
-					isRun = true;
-				}}><Icon icon="fluent:play-28-filled" /></button
-			>
-		{:else}
-			<button
-				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 text-black {isRun
-					? 'bg-gray-300'
-					: 'bg-[aquamarine]'}"
-				onclick={() => {
-					// Stop the shader code
-					nextPage('next');
-				}}><Icon icon="streamline:next" /></button
-			>
+		{#if import.meta.env.DEV}
+			{#if !isRun}
+				<button
+					class="grid shrink-0 cursor-pointer place-items-center rounded p-1 text-black {isRun
+						? 'bg-gray-300'
+						: 'bg-[aquamarine]'}"
+					onclick={() => {
+						// Run the shader code
+						run.set(++$run);
+						isRun = true;
+					}}><Icon icon="fluent:play-28-filled" /></button
+				>
+			{:else}
+				<button
+					class="grid shrink-0 cursor-pointer place-items-center rounded p-1 text-black {isRun
+						? 'bg-gray-300'
+						: 'bg-[aquamarine]'}"
+					onclick={() => {
+						// Stop the shader code
+						nextPage('next');
+					}}><Icon icon="streamline:next" /></button
+				>
+			{/if}
 		{/if}
 	</div>
 	<div class="h-full w-full" bind:this={editElement}></div>
