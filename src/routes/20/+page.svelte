@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state([...highlightRange(16, 18), ...highlightRange(27, 28)]);
+	const highlightLines = $state([...highlightRange(21, 32)]);
 </script>
 
-<Editor {highlightLines} title={'ループ'} />
+<Editor {highlightLines} title={'ループ処理による複製'} />

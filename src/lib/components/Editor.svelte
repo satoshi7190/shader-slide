@@ -185,7 +185,7 @@
 
 <div class="flex h-full flex-col {$isFullCanvas ? 'w-0' : 'w-1/2'}">
 	<div class="flex w-full flex-1 items-center justify-between bg-[#272822] px-2">
-		<div class="text-[200%] text-white">{title}</div>
+		<div class="text-[200%] text-white select-none">{title}</div>
 		{#if !isRun}
 			<button
 				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 text-black {isRun
