@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state([...highlightRange(25, 35), ...highlightRange(61, 62)]);
+	const highlightLines = $state(highlightRange(7, 7));
 </script>
 
-<Editor {highlightLines} title={'回転'} />
+<Editor {highlightLines} title={'中心基準に正規化'} />

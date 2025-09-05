@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state([...highlightRange(41, 55), ...highlightRange(67, 69)]);
+	const highlightLines = $state([...highlightRange(26, 36)]);
 </script>
 
-<Editor title="有機的な動き" {highlightLines} />
+<Editor {highlightLines} title={'グロー効果'} />

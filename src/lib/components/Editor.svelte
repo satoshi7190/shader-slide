@@ -108,7 +108,7 @@
 		editor.setOptions({
 			theme: 'ace/theme/monokai',
 			mode: 'ace/mode/glsl',
-			fontSize: '60%',
+			fontSize: '70%',
 			tabSize: 4,
 			useSoftTabs: true,
 			showPrintMargin: false,
@@ -121,7 +121,8 @@
 		});
 
 		editor.session.setUseWrapMode(true);
-		editor.setValue($fs, -1);
+		editor.setValue($fs);
+		editor.clearSelection(); // 選択状態をクリア
 
 		// 初期ハイライトを適用
 		if (highlightLines.length > 0) {
@@ -204,7 +205,7 @@
 					// Run the shader code
 					run.set(++$run);
 					isRun = true;
-				}}><Icon icon="line-md:play-filled" /></button
+				}}><Icon icon="fluent:play-28-filled" /></button
 			>
 		{:else}
 			<button

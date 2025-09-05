@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class="absolute top-0 left-0 z-10 h-full w-full {transparent ? '' : 'bg-black/50'}"
+	class="absolute top-0 left-0 z-10 h-full w-full select-none {transparent ? '' : 'bg-black/50'}"
 	onclick={() => nextPage('next')}
 	role="button"
 	tabindex="0"

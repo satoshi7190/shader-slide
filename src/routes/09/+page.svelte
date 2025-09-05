@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state([...highlightRange(35, 37)]);
+	const highlightLines = $state(highlightRange(6, 8));
 </script>
 
-<Editor {highlightLines} title={'グロー効果を重ねる'} />
+<Editor {highlightLines} title={'円を書く'} />

@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state(highlightRange(16, 19));
+	const highlightLines = $state([...highlightRange(41, 55), ...highlightRange(67, 69)]);
 </script>
 
-<Editor {highlightLines} title={'リング状にする'} />
+<Editor title="有機的な動き" {highlightLines} />

@@ -1,16 +1,19 @@
 <script lang="ts">
 	import Editor from '$lib/components/Editor.svelte';
+	import Overlay from '$lib/components/Overlay.svelte';
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import { onMount } from 'svelte';
 	import { highlightRange } from '$lib/utils';
+	import { nextPage } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
-		isFullCanvas.set(false);
+		isFullCanvas.set(true);
 	});
-
-	const highlightLines = $state([...highlightRange(21, 32)]);
 </script>
 
-<Editor {highlightLines} title={'ループ処理による複製'} />
+<Overlay transparent={true}>
+	<span></span>
+</Overlay>
+<Editor />
