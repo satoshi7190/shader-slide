@@ -3,7 +3,6 @@
 「フロントエンドカンファレンス北海道 2025」で発表したスライドのリポジトリです。
 
 ![alt text](image.png)
-![alt text](image-3.png)
 ![alt text](image-2.png)
 
 ### プロポーザル
