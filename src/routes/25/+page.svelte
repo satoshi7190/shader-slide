@@ -3,14 +3,14 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import { onMount } from 'svelte';
+	import { highlightRange } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
 		isFullCanvas.set(false);
 	});
 
-	// ハイライトしたい行を定義
-	const highlightLines = $state([{ line: 2, message: 'Syntax error here' }]);
+	const highlightLines = $state([...highlightRange(25, 35), ...highlightRange(61, 62)]);
 </script>
 
-<Editor {highlightLines} title="Fragment Shader" />
+<Editor {highlightLines} title={'回転'} />

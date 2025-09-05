@@ -61,7 +61,7 @@
 			if (message) {
 				const existingAnnotations = editor.session.getAnnotations() || [];
 				const newAnnotation = {
-					row: line,
+					row: Math.max(0, line - 1),
 					column: 0,
 					text: message,
 					type: className.includes('error')
@@ -188,7 +188,7 @@
 		<div class="text-[200%] text-white">{title}</div>
 		{#if !isRun}
 			<button
-				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 {isRun
+				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 text-black {isRun
 					? 'bg-gray-300'
 					: 'bg-[aquamarine]'}"
 				onclick={() => {
@@ -199,7 +199,7 @@
 			>
 		{:else}
 			<button
-				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 {isRun
+				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 text-black {isRun
 					? 'bg-gray-300'
 					: 'bg-[aquamarine]'}"
 				onclick={() => {
@@ -293,7 +293,7 @@
 		overflow-x: hidden !important;
 		-webkit-overflow-scrolling: touch !important;
 		scrollbar-gutter: stable !important;
-		scroll-behavior: smooth;
+		/* scroll-behavior: smooth; */
 
 		&::-webkit-scrollbar {
 			width: 5px !important;

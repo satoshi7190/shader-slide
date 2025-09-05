@@ -3,14 +3,14 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import { onMount } from 'svelte';
-	import { highlightRange } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state([...highlightRange(41, 55), ...highlightRange(67, 69)]);
+	// ハイライトしたい行を定義
+	const highlightLines = $state([{ line: 2, message: 'Syntax error here' }]);
 </script>
 
-<Editor title="有機的にな動き" {highlightLines} />
+<Editor {highlightLines} title="Fragment Shader" />

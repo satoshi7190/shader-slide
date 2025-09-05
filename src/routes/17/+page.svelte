@@ -7,8 +7,10 @@
 
 	onMount(() => {
 		fs.set(fragment);
-		isFullCanvas.set(true);
+		isFullCanvas.set(false);
 	});
+
+	const highlightLines = $state(highlightRange(6, 8));
 </script>
 
-<Editor />
+<Editor {highlightLines} title={'円を書く'} />

@@ -7,10 +7,8 @@
 
 	onMount(() => {
 		fs.set(fragment);
-		isFullCanvas.set(false);
+		isFullCanvas.set(true);
 	});
-
-	const highlightLines = $state(highlightRange(7, 7));
 </script>
 
-<Editor {highlightLines} title={'中心基準に正規化'} />
+<Editor />

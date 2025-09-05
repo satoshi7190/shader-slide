@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state([...highlightRange(3, 4), ...highlightRange(67, 69)]);
+	const highlightLines = $state(highlightRange(7, 7));
 </script>
 
-<Editor title="音と連動させる" {highlightLines} />
+<Editor {highlightLines} title={'中心基準に正規化'} />

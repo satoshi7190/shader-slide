@@ -3,6 +3,7 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import Overlay from '$lib/components/Overlay.svelte';
+	import { highlightRange } from '$lib/utils';
 
 	import { onMount } from 'svelte';
 

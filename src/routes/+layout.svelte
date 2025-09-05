@@ -52,7 +52,7 @@
 </script>
 
 <div class="grid h-dvh w-screen place-items-center bg-black">
-	<div class="absolute aspect-video w-full bg-white text-[2vw]">
+	<div class="absolute aspect-video w-full text-[2vw] text-white">
 		<div class="absolute flex h-full w-full">
 			{@render children()}
 			<WebGLScreen />

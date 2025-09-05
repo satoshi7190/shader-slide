@@ -10,7 +10,7 @@
 		isFullCanvas.set(false);
 	});
 
-	const highlightLines = $state([...highlightRange(10, 14), ...highlightRange(26, 27)]);
+	const highlightLines = $state([...highlightRange(45, 46)]);
 </script>
 
-<Editor {highlightLines} title={'HSV色空間変換'} />
+<Editor {highlightLines} title={'波紋効果'} />
