@@ -130,7 +130,6 @@
 
 		const updateCode = debounce((_code) => {
 			if (!isRun) return;
-			console.log('updateCode called');
 
 			fs.set(_code);
 			run.set(++$run);
@@ -181,7 +180,17 @@
 			clearHighlights();
 		};
 	});
+
+	// キーボードイベントハンドラー
+	const handleKeydown = (event: KeyboardEvent) => {
+		if (event.key === 'Enter') {
+			// 再生/一時停止
+			isRun = true;
+		}
+	};
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <div class="flex h-full flex-col {$isFullCanvas ? 'w-0' : 'w-1/2'}">
 	<div class="flex w-full flex-1 items-center justify-between bg-[#272822] px-2">
