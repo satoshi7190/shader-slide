@@ -13,4 +13,4 @@
 	const highlightLines = $state([...highlightRange(41, 55), ...highlightRange(67, 69)]);
 </script>
 
-<Editor title="有機的にな動き" {highlightLines} />
+<Editor title="有機的な動き" {highlightLines} />

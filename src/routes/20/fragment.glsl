@@ -13,15 +13,15 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
-    st.x *= resolution.x / resolution.y;
+    vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    uv.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
     
     for (int i = 0; i < 3; i++) {
         float fi = float(i);
         float radius = 0.2 + fi * 0.15;
-        float circle = sdCircle(st, radius);
+        float circle = sdCircle(uv, radius);
         
         float hue = fi * 0.3 + time * 0.1;
         vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));

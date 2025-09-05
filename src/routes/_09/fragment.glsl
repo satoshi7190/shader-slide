@@ -24,14 +24,14 @@ float sdCircle(vec2 p, float r) {
 }
 
 // ノイズ系関数 乱数
-float random(vec2 st) {
-    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
+float random(vec2 uv) {
+    return fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
 // ノイズ系関数 スムーズノイズ
-float noise(vec2 st) {
-    vec2 i = floor(st);
-    vec2 f = fract(st);
+float noise(vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
     vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(mix(random(i), random(i + vec2(1.0, 0.0)), u.x),
                 mix(random(i + vec2(0.0, 1.0)), random(i + vec2(1.0)), u.x), u.y);
@@ -59,8 +59,8 @@ out vec4 fragColor;
 void main() {
 // UV座標の計算
     vec2 uv = gl_FragCoord.xy / resolution.xy;
-    vec2 st = (uv - 0.5) * 2.0;
-    st.x *= resolution.x / resolution.y;
+    vec2 uv = (uv - 0.5) * 2.0;
+    uv.x *= resolution.x / resolution.y;
 
     vec3 color = vec3(0.0);
 
@@ -77,7 +77,7 @@ void main() {
 for (int i = 0; i < 5; i++) {
     // float fi = float(i);
     float fi = float(i) * bass * 5.0; // 低音域に基づいて回転速度を調整
-    vec2 rotSt = rotate2d(time * (0.3 + fi * 0.1) * u_intensity) * st;
+    vec2 rotSt = rotate2d(time * (0.3 + fi * 0.1) * u_intensity) * uv;
     float radius = 0.1 + fi * 0.15;
     float ring = sdCircle(rotSt, radius);
     
@@ -95,13 +95,13 @@ for (int i = 0; i < 5; i++) {
 
 // 波紋効果
 float waves = 0.0;
-waves += ripple(vec2(0.0), st, time * 4.0 * u_intensity, 25.0, 0.4);
-waves += ripple(vec2(0.4, 0.4), st, time * 3.0 * u_intensity, 18.0, 0.3);
-waves += ripple(vec2(-0.3, 0.2), st, time * 2.5 * u_intensity, 22.0, 0.2);
+waves += ripple(vec2(0.0), uv, time * 4.0 * u_intensity, 25.0, 0.4);
+waves += ripple(vec2(0.4, 0.4), uv, time * 3.0 * u_intensity, 18.0, 0.3);
+waves += ripple(vec2(-0.3, 0.2), uv, time * 2.5 * u_intensity, 22.0, 0.2);
 
 
 // パーティクル効果
-vec2 particleCoord = st * 12.0;           // 12x12のグリッドに分割
+vec2 particleCoord = uv * 12.0;           // 12x12のグリッドに分割
 vec2 particleId = floor(particleCoord);    // セルのID
 vec2 particlePos = fract(particleCoord);   // セル内の位置
 
@@ -125,7 +125,7 @@ for (int x = -1; x <= 1; x++) {
 }
 
 
-float centerDist = length(st);
+float centerDist = length(uv);
 vec3 centerGlow = hsv2rgb(vec3(time * 0.05, 0.9, 1.0));
 
 // 中央からの放射光

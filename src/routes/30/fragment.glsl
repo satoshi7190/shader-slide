@@ -24,13 +24,13 @@ float ripple(vec2 center, vec2 uv, float time, float freq, float amp) {
     return sin(dist * freq - time) * amp * (1.0 / (1.0 + dist * 2.0));
 }
 
-float random(vec2 st) {
-    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
+float random(vec2 uv) {
+    return fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453123);
 }
                     
-float noise(vec2 st) {
-    vec2 i = floor(st);
-    vec2 f = fract(st);
+float noise(vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
     vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(mix(random(i), random(i + vec2(1.0, 0.0)), u.x),
                 mix(random(i + vec2(0.0, 1.0)), random(i + vec2(1.0)), u.x), u.y);
@@ -64,8 +64,8 @@ float distortedCircle(vec2 p, float r, float time, float intensity) {
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
-    st.x *= resolution.x / resolution.y;
+    vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    uv.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
 
@@ -79,7 +79,7 @@ void main() {
     // 歪んだ円のリング
     for (int i = 0; i < 3; i++) {
         float fi = float(i);
-        vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * st;
+        vec2 rotSt = rotate2d(time * (0.5 + fi * 0.2)) * uv;
         float radius = 0.2 + fi * 0.15;
         
         // 各リングに異なる歪み強度を適用
@@ -97,22 +97,22 @@ void main() {
     }
 
     // シンプルな歪んだ波紋効果
-    float distortedWaves = ripple(vec2(0.0), st, time * 3.0, 20.0, 0.3);
+    float distortedWaves = ripple(vec2(0.0), uv, time * 3.0, 20.0, 0.3);
     // 波紋を少し歪ませる
-    vec2 waveDistortSt = st + vec2(noise(st * 5.0 + time) - 0.5, noise(st * 5.0 + time + 100.0) - 0.5) * 0.1;
+    vec2 waveDistortSt = uv + vec2(noise(uv * 5.0 + time) - 0.5, noise(uv * 5.0 + time + 100.0) - 0.5) * 0.1;
     distortedWaves += ripple(vec2(0.0), waveDistortSt, time * 2.0, 15.0, 0.2);
     
     color += abs(distortedWaves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
     
     // シンプルなパーティクルシステム
-    vec2 rotatedSt1 = rotate2d(time + bass * 0.3) * st;
+    vec2 rotatedSt1 = rotate2d(time + bass * 0.3) * uv;
     float particles1 = noise(rotatedSt1 * 8.0 + time * 0.5) * 0.5 + 0.5;
     particles1 += noise(rotatedSt1 * 16.0 - time * 0.3) * 0.3;
 
-    vec2 rotatedSt2 = rotate2d(time + mid * -0.5) * st;
+    vec2 rotatedSt2 = rotate2d(time + mid * -0.5) * uv;
     float particles2 = noise(rotatedSt2 * 6.0 + time * 0.4) * 0.4;
 
-    vec2 rotatedSt3 = rotate2d(time + treble * 0.8) * st;
+    vec2 rotatedSt3 = rotate2d(time + treble * 0.8) * uv;
     float particles3 = noise(rotatedSt3 * 12.0 - time * 0.6) * 0.3;
     
     color += particles1 * hsv2rgb(vec3(time * 0.1, 0.6, 1.0)) * 0.3;

@@ -8,10 +8,10 @@ float sdCircle(vec2 p, float r) {
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
-    st.x *= resolution.x / resolution.y;
+    vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    uv.x *= resolution.x / resolution.y;
     
-    float circle = sdCircle(st, 0.3);
+    float circle = sdCircle(uv, 0.3);
     
     // リング状に可視化
     float d = abs(circle);

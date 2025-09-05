@@ -10,8 +10,8 @@ void main() {
     vec2 uv = (gl_FragCoord.xy - 0.5 * resolution.xy) / min(resolution.x, resolution.y);
 
     // 0..1 screen coords
-    vec2 st = gl_FragCoord.xy / resolution.xy;
-    st.x *= resolution.x / resolution.y;
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    uv.x *= resolution.x / resolution.y;
 
     // sample audio: map x to [0..1] across bins
     float x = clamp(gl_FragCoord.x / resolution.x, 0.0, 1.0);

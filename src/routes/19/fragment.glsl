@@ -14,10 +14,10 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
-    st.x *= resolution.x / resolution.y;
+    vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    uv.x *= resolution.x / resolution.y;
     
-    float circle = sdCircle(st, 0.3);
+    float circle = sdCircle(uv, 0.3);
     float d = abs(circle);
 
     float intensity = 1.0 - smoothstep(0.0, 0.1, d);

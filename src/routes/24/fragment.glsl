@@ -22,28 +22,28 @@ float ripple(vec2 center, vec2 uv, float time, float freq, float amp) {
     return sin(dist * freq - time) * amp * (1.0 / (1.0 + dist * 2.0));
 }
 
-float random(vec2 st) {
-    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
+float random(vec2 uv) {
+    return fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453123);
 }
                     
-float noise(vec2 st) {
-    vec2 i = floor(st);
-    vec2 f = fract(st);
+float noise(vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
     vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(mix(random(i), random(i + vec2(1.0, 0.0)), u.x),
                 mix(random(i + vec2(0.0, 1.0)), random(i + vec2(1.0)), u.x), u.y);
 }
 
 void main() {
-    vec2 st = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
-    st.x *= resolution.x / resolution.y;
+    vec2 uv = (gl_FragCoord.xy / resolution.xy - 0.5) * 2.0;
+    uv.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
     
     for (int i = 0; i < 3; i++) {
         float fi = float(i);
         float radius = 0.2 + fi * 0.15;
-        float circle = sdCircle(st, radius);
+        float circle = sdCircle(uv, radius);
         
         float hue = fi * 0.3 + time * 0.1;
         vec3 ringColor = hsv2rgb(vec3(hue, 0.8, 1.0));
@@ -54,11 +54,11 @@ void main() {
         color += glow(d, 0.2, 5.0) * ringColor * 0.8;
     }
     
-    float waves = ripple(vec2(0.0), st, time * 3.0, 20.0, 0.3);
+    float waves = ripple(vec2(0.0), uv, time * 3.0, 20.0, 0.3);
     color += abs(waves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
-    float particles = noise(st * 8.0 + time * 0.5) * 0.5 + 0.5;
+    float particles = noise(uv * 8.0 + time * 0.5) * 0.5 + 0.5;
 
-    particles += noise(st * 16.0 - time * 0.3) * 0.3;
+    particles += noise(uv * 16.0 - time * 0.3) * 0.3;
     color += particles  * 0.2;
 
     fragColor = vec4(color, 1.0);
