@@ -6,7 +6,7 @@
 
 	onMount(() => {
 		fs.set(fragment);
-		isFullCanvas.set(false);
+		isFullCanvas.set(true);
 	});
 </script>
 
