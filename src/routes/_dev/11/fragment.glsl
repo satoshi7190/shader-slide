@@ -1,7 +1,7 @@
 uniform vec2 resolution;
 uniform float time;
-uniform sampler2D u_audioTex; // 1xN audio spectrum texture
-uniform float u_audioBins;    // number of bins (width)
+uniform sampler2D audioTex; // 1xN audio spectrum texture
+uniform float audioBins;    // number of bins (width)
 
 out vec4 fragColor;
 

@@ -1,7 +1,7 @@
 uniform vec2 resolution;
 uniform float time;
-uniform sampler2D u_audioTex; // 1xN audio spectrum texture
-uniform float u_audioBins;    // number of bins (width)
+uniform sampler2D audioTex; // 1xN audio spectrum texture
+uniform float audioBins;    // number of bins (width)
 
 out vec4 fragColor;
 
@@ -16,9 +16,9 @@ void main() {
     // sample audio: map x to [0..1] across bins
     float x = clamp(gl_FragCoord.x / resolution.x, 0.0, 1.0);
     // center of the target bin
-    float bin = floor(x * max(u_audioBins - 1.0, 1.0));
-    float u = (bin + 0.5) / max(u_audioBins, 1.0);
-    float amp = texture(u_audioTex, vec2(u, 0.5)).r; // 0..1
+    float bin = floor(x * max(audioBins - 1.0, 1.0));
+    float u = (bin + 0.5) / max(audioBins, 1.0);
+    float amp = texture(audioTex, vec2(u, 0.5)).r; // 0..1
 
     // simple visual: bars + glow by amplitude
     float bars = smoothstep(0.02, 0.0, abs(uv.y) - amp * 0.8);

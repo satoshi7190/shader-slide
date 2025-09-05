@@ -1,7 +1,7 @@
 uniform vec2 resolution;
 uniform float time;
-uniform sampler2D u_audioTex;
-uniform float u_audioBins;
+uniform sampler2D audioTex;
+uniform float audioBins;
 
 out vec4 fragColor;
 
@@ -72,9 +72,9 @@ void main() {
     float u_intensity = 0.1;
     
     // 音声データ取得
-    float bass = texture(u_audioTex, vec2(0.1, 0.5)).r;
-    float treble = texture(u_audioTex, vec2(0.9, 0.5)).r;
-    float mid = texture(u_audioTex, vec2(0.5, 0.5)).r;
+    float bass = texture(audioTex, vec2(0.1, 0.5)).r;
+    float treble = texture(audioTex, vec2(0.9, 0.5)).r;
+    float mid = texture(audioTex, vec2(0.5, 0.5)).r;
 
     // 歪んだ円のリング
     for (int i = 0; i < 3; i++) {

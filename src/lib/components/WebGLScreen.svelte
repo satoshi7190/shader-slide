@@ -139,8 +139,8 @@
 		time = gl.getUniformLocation(program, 'time');
 		resolution = gl.getUniformLocation(program, 'resolution');
 		mouse = gl.getUniformLocation(program, 'mouse');
-		audioTexUniform = gl.getUniformLocation(program, 'u_audioTex');
-		audioBinsUniform = gl.getUniformLocation(program, 'u_audioBins');
+		audioTexUniform = gl.getUniformLocation(program, 'audioTex');
+		audioBinsUniform = gl.getUniformLocation(program, 'audioBins');
 
 		const positionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -321,8 +321,8 @@
 		time = gl.getUniformLocation(program, 'time');
 		resolution = gl.getUniformLocation(program, 'resolution');
 		mouse = gl.getUniformLocation(program, 'mouse');
-		audioTexUniform = gl.getUniformLocation(program, 'u_audioTex');
-		audioBinsUniform = gl.getUniformLocation(program, 'u_audioBins');
+		audioTexUniform = gl.getUniformLocation(program, 'audioTex');
+		audioBinsUniform = gl.getUniformLocation(program, 'audioBins');
 		if (audioTexUniform) gl.uniform1i(audioTexUniform, audioTexUnit);
 		if (audioBinsUniform) gl.uniform1f(audioBinsUniform, audioBins);
 

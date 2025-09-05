@@ -78,7 +78,6 @@ void main() {
         color += glow(d, 0.2, 5.0) * ringColor * 0.8;
     }
 
-
     float distortedWaves = ripple(vec2(0.0), st, time * 3.0, 20.0, 0.3);
     vec2 waveDistortSt = st + vec2(noise(st * 5.0 + time) - 0.5, noise(st * 5.0 + time + 100.0) - 0.5) * 0.1;
     distortedWaves += ripple(vec2(0.0), waveDistortSt, time * 2.0, 15.0, 0.2);

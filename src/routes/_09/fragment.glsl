@@ -1,7 +1,7 @@
 uniform vec2 resolution;
 uniform float time;
-uniform sampler2D u_audioTex;
-uniform float u_audioBins;
+uniform sampler2D audioTex;
+uniform float audioBins;
 
 
 
@@ -68,10 +68,10 @@ void main() {
 
      // 方法1: 直接的なアクセス
         // 低音域だけでビジュアル作成（ドラムキックに反応）
-    float bass = texture(u_audioTex, vec2(0.1, 0.5)).r;
+    float bass = texture(audioTex, vec2(0.1, 0.5)).r;
     
     // 高音域だけでビジュアル作成（シンバルやハイハットに反応）
-    float treble = texture(u_audioTex, vec2(0.9, 0.5)).r;
+    float treble = texture(audioTex, vec2(0.9, 0.5)).r;
 
 // Magic circle rings
 for (int i = 0; i < 5; i++) {

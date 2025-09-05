@@ -3,11 +3,14 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas } from '$lib/store';
 	import { onMount } from 'svelte';
+	import { highlightRange } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
 		isFullCanvas.set(false);
 	});
+
+	const highlightLines = $state([...highlightRange(3, 4), ...highlightRange(67, 69)]);
 </script>
 
-<Editor />
+<Editor title="音と連動させる" {highlightLines} />
