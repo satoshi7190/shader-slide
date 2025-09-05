@@ -11,7 +11,7 @@
 </script>
 
 <div
-	class="absolute bottom-0 z-10 flex w-full justify-between bg-black/50 p-1 px-4 text-sm shadow-lg {show &&
+	class="absolute bottom-0 z-10 flex w-full justify-end bg-black/50 p-1 px-4 text-sm shadow-lg {show &&
 	!$isFullScreen
 		? ''
 		: 'opacity-0 transition-opacity duration-300 hover:opacity-70'}"
