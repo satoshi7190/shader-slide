@@ -105,15 +105,15 @@ void main() {
     color += abs(distortedWaves) * hsv2rgb(vec3(time * 0.1, 0.7, 0.6));
     
     // シンプルなパーティクルシステム
-    vec2 rotatedSt1 = rotate2d(time + bass * 0.3) * uv;
-    float particles1 = noise(rotatedSt1 * 8.0 + time * 0.5) * 0.5 + 0.5;
-    particles1 += noise(rotatedSt1 * 16.0 - time * 0.3) * 0.3;
+    vec2 rotatedUv1 = rotate2d(time + bass * 0.3) * uv;
+    float particles1 = noise(rotatedUv1 * 8.0 + time * 0.5) * 0.5 + 0.5;
+    particles1 += noise(rotatedUv1 * 16.0 - time * 0.3) * 0.3;
 
-    vec2 rotatedSt2 = rotate2d(time + mid * -0.5) * uv;
-    float particles2 = noise(rotatedSt2 * 6.0 + time * 0.4) * 0.4;
+    vec2 rotatedUv2 = rotate2d(time + mid * -0.5) * uv;
+    float particles2 = noise(rotatedUv2 * 6.0 + time * 0.4) * 0.4;
 
-    vec2 rotatedSt3 = rotate2d(time + treble * 0.8) * uv;
-    float particles3 = noise(rotatedSt3 * 12.0 - time * 0.6) * 0.3;
+    vec2 rotatedUv3 = rotate2d(time + treble * 0.8) * uv;
+    float particles3 = noise(rotatedUv3 * 12.0 - time * 0.6) * 0.3;
     
     color += particles1 * hsv2rgb(vec3(time * 0.1, 0.6, 1.0)) * 0.3;
     color += particles2 * hsv2rgb(vec3(time * 0.15 + 0.3, 0.7, 0.8)) * 0.2;
