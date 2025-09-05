@@ -12,7 +12,6 @@ void main() {
     
     float circle = sdCircle(uv, 0.3);
     
-    // リング状に可視化
     float d = abs(circle);
     float intensity = 1.0 - smoothstep(0.0, 0.1, d);
     vec3 color = vec3(1.0) * intensity;
