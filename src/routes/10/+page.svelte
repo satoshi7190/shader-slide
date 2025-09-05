@@ -11,7 +11,7 @@
 		if (import.meta.env.PROD) run.set(++$run);
 	});
 
-	const highlightLines = $state(highlightRange(16, 19));
+	const highlightLines = $state(highlightRange(15, 17));
 </script>
 
-<Editor {highlightLines} title={'リング状にする'} />
+<Editor {highlightLines} title={'リングを描く'} />

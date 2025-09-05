@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
+/* タイトル */
 @utility title {
 	@apply absolute top-[3%] left-[2%] text-[200%] text-white;
 }

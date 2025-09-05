@@ -18,10 +18,9 @@ void main() {
     uv.x *= resolution.x / resolution.y;
     
     float circle = sdCircle(uv, 0.3);
-    float d = abs(circle);
 
+    float d = abs(circle);
     float intensity = 1.0 - smoothstep(0.0, 0.1, d);
-    
     vec3 color = hsv2rgb(vec3(time * 0.1, 0.8, 1.0)) * intensity;
     
     fragColor = vec4(color, 1.0);

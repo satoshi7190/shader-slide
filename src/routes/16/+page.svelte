@@ -11,7 +11,19 @@
 		if (import.meta.env.PROD) run.set(++$run);
 	});
 
-	const highlightLines = $state([...highlightRange(25, 35), ...highlightRange(61, 62)]);
+	const highlightLines = $state([
+		{
+			line: 25,
+			message: '乱数関数'
+		},
+		...highlightRange(26, 27),
+		{
+			line: 29,
+			message: 'ノイズ関数'
+		},
+		...highlightRange(30, 35),
+		...highlightRange(61, 62)
+	]);
 </script>
 
-<Editor {highlightLines} title={'ノイズ'} />
+<Editor {highlightLines} title={'パーティクルを描く'} />

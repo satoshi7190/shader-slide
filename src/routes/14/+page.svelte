@@ -14,4 +14,4 @@
 	const highlightLines = $state([...highlightRange(35, 37)]);
 </script>
 
-<Editor {highlightLines} title={'グロー効果を重ねる'} />
+<Editor {highlightLines} title={'さらに光らせる'} />

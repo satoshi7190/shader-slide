@@ -11,7 +11,14 @@
 		if (import.meta.env.PROD) run.set(++$run);
 	});
 
-	const highlightLines = $state([...highlightRange(26, 36)]);
+	const highlightLines = $state([
+		{
+			line: 16,
+			message: 'グロー効果関数'
+		},
+		...highlightRange(17, 18),
+		...highlightRange(26, 36)
+	]);
 </script>
 
-<Editor {highlightLines} title={'グロー効果'} />
+<Editor {highlightLines} title={'光らせる'} />

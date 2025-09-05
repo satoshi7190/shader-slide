@@ -11,7 +11,14 @@
 		if (import.meta.env.PROD) run.set(++$run);
 	});
 
-	const highlightLines = $state([...highlightRange(45, 46)]);
+	const highlightLines = $state([
+		{
+			line: 20,
+			message: '波紋効果関数'
+		},
+		...highlightRange(21, 22),
+		...highlightRange(45, 46)
+	]);
 </script>
 
-<Editor {highlightLines} title={'波紋効果'} />
+<Editor {highlightLines} title={'波紋を描く'} />

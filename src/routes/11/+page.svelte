@@ -11,7 +11,20 @@
 		if (import.meta.env.PROD) run.set(++$run);
 	});
 
-	const highlightLines = $state([...highlightRange(10, 14), ...highlightRange(26, 27)]);
+	// HSV色空間変換
+
+	const highlightLines = $state([
+		{
+			line: 2,
+			message: '時間を使ってアニメーション'
+		},
+		{
+			line: 10,
+			message: 'HSV色空間変換関数'
+		},
+		...highlightRange(11, 14),
+		...highlightRange(22, 24)
+	]);
 </script>
 
-<Editor {highlightLines} title={'HSV色空間変換'} />
+<Editor {highlightLines} title={'色を動的に変化させる'} />
