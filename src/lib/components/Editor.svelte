@@ -5,6 +5,7 @@
 	import { debounce } from 'es-toolkit';
 	import { page } from '$app/state';
 	import type { HighlightLine } from '$lib/utils';
+	import Icon from '@iconify/svelte';
 
 	// --- 必要なモジュールのインポート ---
 	import 'ace-builds/src-noconflict/mode-glsl';
@@ -17,7 +18,7 @@
 		highlightLines?: HighlightLine[]; // ハイライトする行の配列
 	}
 
-	let { highlightLines = [], title }: Props = $props();
+	let { highlightLines = [], title = 'Shader Editor' }: Props = $props();
 	let isRun = $state(false);
 
 	const workerUrl = new URL('ace-builds/src-noconflict/worker-glsl.js', import.meta.url).href;
@@ -183,29 +184,28 @@
 </script>
 
 <div class="flex h-full flex-col {$isFullCanvas ? 'w-0' : 'w-1/2'}">
-	<div class="flex w-full flex-1 justify-between bg-[#272822] px-2">
+	<div class="flex w-full flex-1 items-center justify-between bg-[#272822] px-2">
 		<div class="text-[200%] text-white">{title}</div>
-
 		{#if !isRun}
 			<button
-				class="grid cursor-pointer place-items-center rounded p-1 {isRun
+				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 {isRun
 					? 'bg-gray-300'
 					: 'bg-[aquamarine]'}"
 				onclick={() => {
 					// Run the shader code
 					run.set(++$run);
 					isRun = true;
-				}}><span>run</span></button
+				}}><Icon icon="line-md:play-filled" /></button
 			>
 		{:else}
 			<button
-				class="grid cursor-pointer place-items-center rounded p-1 {isRun
+				class="grid shrink-0 cursor-pointer place-items-center rounded p-1 {isRun
 					? 'bg-gray-300'
 					: 'bg-[aquamarine]'}"
 				onclick={() => {
 					// Stop the shader code
 					nextPage('next');
-				}}><span>next→</span></button
+				}}><Icon icon="streamline:next" /></button
 			>
 		{/if}
 	</div>
