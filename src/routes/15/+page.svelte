@@ -10,4 +10,4 @@
 	});
 </script>
 
-<Editor />
+<Editor title="有機的に歪ませる" />
