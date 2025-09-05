@@ -61,8 +61,6 @@ void main() {
     uv.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.0);
-
-    float u_intensity = 0.1;
     
     float bass = texture(audioTex, vec2(0.1, 0.5)).r;
     float treble = texture(audioTex, vec2(0.9, 0.5)).r;

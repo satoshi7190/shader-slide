@@ -3,6 +3,7 @@
 	import fragment from './fragment.glsl?raw';
 	import { fs, isFullCanvas, run } from '$lib/store';
 	import { onMount } from 'svelte';
+	import { highlightRange } from '$lib/utils';
 
 	onMount(() => {
 		fs.set(fragment);
@@ -21,17 +22,18 @@
 		},
 
 		{
+			line: 65,
+			message: '低周波数帯域をサンプリング'
+		},
+		{
+			line: 66,
+			message: '低周波数帯域をサンプリング'
+		},
+		{
 			line: 67,
-			message: '低周波数帯域をサンプリング'
-		},
-		{
-			line: 68,
-			message: '低周波数帯域をサンプリング'
-		},
-		{
-			line: 69,
 			message: '中周波数帯域をサンプリング'
-		}
+		},
+		...highlightRange(82, 84)
 	]);
 </script>
 
