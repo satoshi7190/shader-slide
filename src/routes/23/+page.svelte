@@ -22,6 +22,9 @@
 			<span class="text-[100%]"
 				>15分以内にGLSLをライブコーディングで書き、視覚的な作品を作って競う競技</span
 			>
+			<br />
+			<br />
+			<span class="text-[100%]">YouTubeでアーカイブチェックできます</span>
 		</div>
 		<br />
 

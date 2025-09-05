@@ -14,7 +14,7 @@
 </script>
 
 <Overlay>
-	<span class="title">🎨 GLSLをシェアする</span>
+	<span class="title">🎨 GLSLを書く、シェアする</span>
 	<div class="absolute top-[20%] flex h-[80%] w-full flex-col px-[3%] text-[130%] text-white">
 		<span class="text-[150%]">ShaderToy</span>
 		<div class="w-[50%] pt-[3%]">

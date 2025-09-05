@@ -20,6 +20,9 @@
 	<span class="absolute bottom-0 bg-black/70 p-[1%]">0,0</span>
 	<span class="absolute right-0 bottom-0 bg-black/70 p-[1%]">1,0</span>
 	<span class="absolute top-0 right-0 bg-black/70 p-[1%]">1,1</span>
+	<span class="absolute top-[32%] right-[6%] w-[80%] bg-black/70 p-[1%] text-[70%]">
+		画面上の位置を表す2次元座標
+	</span>
 
 	<!-- X軸矢印（右向き） -->
 	<div class="absolute bottom-[7%] left-[45%] flex items-center">
