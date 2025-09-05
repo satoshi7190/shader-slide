@@ -14,10 +14,12 @@
 </script>
 
 <Overlay>
-	<span class="title">📚 GLSLを学ぶ</span>
-	<div class="absolute top-[15%] flex flex-col px-[3%] text-[130%] text-white">
-		<span>シェーダートイ</span>
+	<span class="title">🎨 GLSLをシェアする</span>
+	<div class="absolute top-[20%] flex flex-col px-[3%] text-[130%] text-white">
+		<span>チュートリアルサイト </span>
 		<br />
-		<span>シェーダートイ</span>
+		<span>チュートリアル動画 </span>
+		<br />
+		<span>チュートリアル動画</span>
 	</div>
 </Overlay>

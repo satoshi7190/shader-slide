@@ -14,7 +14,7 @@
 
 <Overlay>
 	<span class="title">GLSL（OpenGL Shading Language）とは</span>
-	<div class="absolute top-[15%] flex flex-col px-[3%] text-[100%] text-white">
+	<div class="absolute top-[15%] flex flex-col px-[3%] text-[150%] text-white">
 		<span
 			>GLSL（OpenGL Shading
 			Language）とは、OpenGLで使用されるシェーディング言語です。主に3Dグラフィックスの描画において、頂点シェーダーやフラグメントシェーダーを記述するために使用されます。</span
