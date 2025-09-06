@@ -2,7 +2,7 @@ import { goto } from '$app/navigation';
 import { page } from '$app/state';
 
 // ページのルートを定義
-const routes = [
+const routesDev = [
 	'/',
 	'/01',
 	'/02',
@@ -38,24 +38,69 @@ const routes = [
 	'/32'
 ];
 
+const routesProd = [
+	'/shader-slide/',
+	'/shader-slide/01',
+	'/shader-slide/02',
+	'/shader-slide/03',
+	'/shader-slide/04',
+	'/shader-slide/05',
+	'/shader-slide/06',
+	'/shader-slide/07',
+	'/shader-slide/08',
+	'/shader-slide/09',
+	'/shader-slide/10',
+	'/shader-slide/11',
+	'/shader-slide/12',
+	'/shader-slide/13',
+	'/shader-slide/14',
+	'/shader-slide/15',
+	'/shader-slide/16',
+	'/shader-slide/17',
+	'/shader-slide/18',
+	'/shader-slide/19',
+	'/shader-slide/20',
+	'/shader-slide/21',
+	'/shader-slide/22',
+	'/shader-slide/23',
+	'/shader-slide/24',
+	'/shader-slide/25',
+	'/shader-slide/26',
+	'/shader-slide/27',
+	'/shader-slide/28',
+	'/shader-slide/29',
+	'/shader-slide/30',
+	'/shader-slide/31',
+	'/shader-slide/32'
+];
+
 export const nextPage = (type: 'next' | 'prev') => {
 	const currentPath = page.url.pathname;
-	const currentIndex = routes.indexOf(currentPath);
+	console.log('Current Path:', currentPath); // デバッグ用ログ
+	let currentIndex;
 
-	if (type === 'next') {
-		if (currentIndex < routes.length - 1) {
-			if (import.meta.env.PROD) {
-				goto(`shader-slide${routes[currentIndex + 1]}`);
-			} else {
-				goto(routes[currentIndex + 1]);
+	if (import.meta.env.PROD) {
+		currentIndex = routesProd.indexOf(currentPath);
+
+		if (type === 'next') {
+			if (currentIndex < routesProd.length - 1) {
+				goto(routesProd[currentIndex + 1]);
+			}
+		} else if (type === 'prev') {
+			if (currentIndex > 0) {
+				goto(routesProd[currentIndex - 1]);
 			}
 		}
-	} else if (type === 'prev') {
-		if (currentIndex > 0) {
-			if (import.meta.env.PROD) {
-				goto(`shader-slide${routes[currentIndex - 1]}`);
-			} else {
-				goto(routes[currentIndex - 1]);
+	} else {
+		currentIndex = routesDev.indexOf(currentPath);
+
+		if (type === 'next') {
+			if (currentIndex < routesDev.length - 1) {
+				goto(routesDev[currentIndex + 1]);
+			}
+		} else if (type === 'prev') {
+			if (currentIndex > 0) {
+				goto(routesDev[currentIndex - 1]);
 			}
 		}
 	}
