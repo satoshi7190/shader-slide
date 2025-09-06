@@ -44,11 +44,19 @@ export const nextPage = (type: 'next' | 'prev') => {
 
 	if (type === 'next') {
 		if (currentIndex < routes.length - 1) {
-			goto(routes[currentIndex + 1]);
+			if (import.meta.env.PROD) {
+				goto(`shader-slide${routes[currentIndex + 1]}`);
+			} else {
+				goto(routes[currentIndex + 1]);
+			}
 		}
 	} else if (type === 'prev') {
 		if (currentIndex > 0) {
-			goto(routes[currentIndex - 1]);
+			if (import.meta.env.PROD) {
+				goto(`shader-slide${routes[currentIndex - 1]}`);
+			} else {
+				goto(routes[currentIndex - 1]);
+			}
 		}
 	}
 };
