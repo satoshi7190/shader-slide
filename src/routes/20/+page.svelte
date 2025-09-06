@@ -15,7 +15,7 @@
 
 <Overlay>
 	<div class="grid h-full w-full place-items-center">
-		<span class="text-[200%]">🪄 君もGLSLを書いて魔法使いになろう！</span>
+		<span class="text-[200%]">🪄 君も呪文（GLSL）を書いて魔法使いになろう！</span>
 	</div>
 </Overlay>
 <Editor />
