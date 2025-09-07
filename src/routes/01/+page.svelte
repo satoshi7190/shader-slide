@@ -18,12 +18,12 @@
 	>
 		<img class="aspect-square w-[60%] rounded-full c-no-drag-icon" src="./icon.png" alt="Icon" />
 	</div>
-	<div class="absolute top-[15%] right-[8%] flex flex-col gap-4 text-[150%]">
-		<span class="text-[160%]">Satoshi Komatsu</span>
+	<div class="absolute top-[15%] right-[8%] flex flex-col text-[150%]">
+		<span class="mb-[10%] text-[160%]">Satoshi Komatsu</span>
 
 		<span> </span>
 		<span>株式会社MIERUNE</span>
-		<span>フロントエンドエンジニア</span>
+		<span class="mb-[10%]">フロントエンドエンジニア</span>
 		<span> </span>
 		<span> </span>
 
